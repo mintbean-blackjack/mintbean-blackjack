@@ -2,33 +2,6 @@ import Dealer from "./Dealer";
 import Player from "./Player";
 import ComputerPlayer from "./ComputerPlayer";
 
-//ex. player class:
-// class Player {
-//   constructor() {
-//     this.name = "p1";
-//     this.currentCards = [];
-//     this.totalMoney = 2500;
-//     this.currentBetAmount = 0;
-//   }
-// }
-
-//computer player extends player, just has specific play logic
-// class ComputerPlayer {
-//   constructor() {
-//     this.name = "comp";
-//     this.currentCards = [];
-//     this.totalMoney = technically unlimited?;
-//     this.currentBetAmount = 0;
-//   }
-// }
-
-// ex dealer class:
-// class Dealer {
-//     constructor() {
-//         this.deck = makeDeck();
-//     }
-// }
-
 export default class Game {
   constructor() {
     //initiating new player, dealer, computer player here rather than in startGame
@@ -67,6 +40,7 @@ export default class Game {
     if (this.dealer.deck.length <= 26) {
       this.dealer.shuffle();
     }
+    //player can now place a bet
   }
 
   endGame() {
@@ -80,22 +54,32 @@ export default class Game {
     let playerHand = this.player.getCardTotal();
     let dealerHand = this.computerPlayer.getCardTotal();
     let winner;
+    let loser;
     if (playerHand == dealerHand) {
-      winner = "draw";
+      //draw; no need to calculate payout and can just return message
+      return "Draw";
     } else if (playerHand > dealerHand && playerHand <= 21) {
       winner = this.player;
+      loser = this.computerPlayer;
     } else if (playerHand < dealerHand && dealerHand <= 21) {
       winner = this.computerPlayer;
+      loser = this.player;
     }
-    this.calculatePayout(winner);
+    this.calculatePayout(winner, loser);
   }
 
-  calculatePayout(winner) {
-    if (winner === "draw") {
-    }
-    winner.updateTotalMoney();
-    //calls this.displayWinner
+  calculatePayout(winner, loser) {
+    //need additional logic to determine if any player has a natural and therfore wins 1.5x payout
+    //maybe add hasNatural to player property and set to false at the end of every game, set to true if natural after dealing
+    let payout = winner.currentBetAmount + loser.currentBetAmount;
+    this.displayWinner(winner, loser, payout);
   }
 
-  displayWinner(player, payout) {}
+  displayWinner(winner, loser, payout) {
+    winner.updateTotalMoney(payout);
+    loser.updateTotalMoney(-loser.currentBetAmount);
+    //something to consider: what happens when computer is the dealer - should the dealer have totalMoney?
+    //if so, what happens when the dealer runs out of money
+    return `${winner.name} wins ${payout}!`;
+  }
 }
