@@ -1,6 +1,3 @@
-import Dealer from './Dealer';
-import Game from './Game';
-
 export default class Player {
   constructor(name, dealer) {
     this.name = name;
@@ -56,11 +53,5 @@ export default class Player {
     }
 
     return total;
-  }
-
-  // assign dealer
-  // later called in the game instance, where the dealer is instantiated
-  setDealer(dealer) {
-    this.dealer = dealer;
   }
 }

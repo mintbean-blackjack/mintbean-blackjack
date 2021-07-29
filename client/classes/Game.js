@@ -17,6 +17,7 @@ export default class Game {
     this.computerPlayer.hit();
     this.player.hit();
     this.computerPlayer.hit();
+    this.findWinner();
   }
 
   playAgain() {
