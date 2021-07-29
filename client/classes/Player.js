@@ -25,33 +25,37 @@ export default class Player {
     this.currentCards.push(card);
   }
 
-  getCurrentCards() {
-    return this.currentCards;
-  }
-
   // edge case of handling aces
   getCardTotal() {
-    const cards = this.getCurrentCards();
+    // count the number of aces
+    const acesArray = this.currentCards.filter((card) => card.value === 'A');
+
     const faceCards = ['J', 'Q', 'K'];
 
-    // TODO: handle edge cases of multiple aces
-    const cardTotal = cards.reduce((total, card) => {
-      // if our app is smart and decides the value of ace for the player
-      if (card.value === 'A') {
-        // if ace is counted as 1 and the player would bust otherwise
-        if (total + 1 <= 21 && total + 11 > 21) {
-          return total + 1;
+    // temporarily add up non-ace cards
+    let total = this.currentCards
+      .filter((card) => card.value !== 'A')
+      .reduce((total, card) => {
+        if (faceCards.includes(card.value)) {
+          return total + 10;
         }
-        // if ace is counted as 11
-        else if (total + 11 <= 21) {
-          return total + 11;
-        }
-      } else if (faceCards.includes(card.value)) {
-        return total + 10;
+        return total + Number(card.value);
+      }, 0);
+
+    while (acesArray.length > 1) {
+      acesArray.pop();
+      total++;
+    }
+
+    if (acesArray.length === 1) {
+      if (total <= 10) {
+        total += 11;
+      } else {
+        total++;
       }
-      return total + Number(card.value);
-    }, 0);
-    return cardTotal;
+    }
+
+    return total;
   }
 
   // assign dealer
