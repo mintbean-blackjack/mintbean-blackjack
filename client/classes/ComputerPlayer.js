@@ -1,8 +1,8 @@
 import Player from "./Player";
 
 export default class ComputerPlayer extends Player {
-  constructor(name, currentCards, totalMoney, currentBetAmount) {
-    super(name, currentCards, totalMoney, currentBetAmount);
+  constructor(name, currentCards) {
+    super(name, currentCards);
   }
   play() {
     const { cardTotal } = this;
