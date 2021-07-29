@@ -2,12 +2,12 @@ import Dealer from './Dealer';
 import Game from './Game';
 
 export default class Player {
-  constructor() {
-    this.name = '';
+  constructor(name, dealer) {
+    this.name = name;
     this.currentCards = [];
-    this.totalMoney = 0;
+    this.totalMoney = 2500;
     this.currentBetAmount = 0;
-    this.dealer;
+    this.dealer = dealer;
   }
 
   // player takes a card

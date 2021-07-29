@@ -4,10 +4,9 @@ import ComputerPlayer from './ComputerPlayer';
 
 export default class Game {
   constructor() {
-    this.player = new Player();
-    //will have to change logic for a logged in user
-
     this.dealer = new Dealer();
+    //will have to change logic for a logged in user
+    this.player = new Player(this.dealer);
     this.computerPlayer = new ComputerPlayer();
     this.allPlayers = [this.computerPlayer, this.player];
     this.outcome = '';
