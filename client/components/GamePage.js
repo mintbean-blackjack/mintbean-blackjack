@@ -3,6 +3,9 @@ import GamePageNavBar from './GamePageNavBar';
 
 export const GamePage = (props) => {
   return (
-    <GamePageNavBar /> // game table
+    <div>
+      <GamePageNavBar />
+    </div>
+    // game table
   );
 };
