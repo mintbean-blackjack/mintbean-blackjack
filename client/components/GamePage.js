@@ -5,7 +5,7 @@ export const GamePage = (props) => {
   return (
     <div>
       <GamePageNavBar />
+      {/* Game Table */}
     </div>
-    // game table
   );
 };
