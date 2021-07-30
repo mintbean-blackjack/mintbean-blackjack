@@ -7,7 +7,7 @@ export const GameTable = () => {
   const [player, setPlayer] = useState({});
   const [computerPlayer, setComputerPlayer] = useState({});
 
-  function startGameHandler() {
+  function handleStartGame() {
     game = new Game();
     const { _dealer, _player, _computerPlayer } = game;
     dealer = _dealer;
@@ -15,20 +15,22 @@ export const GameTable = () => {
     setComputerPlayer(_computerPlayer);
   }
 
-  function playAgainHandler() {
+  function handleDeal(num) {
+    // player clicks on deal button after they've placed their bets (like in 247 blackjack)
+    const err = player.placeBet(num);
+    game.dealInitialHand();
+  }
+
+  function handlePlayAgain() {
     game.playAgain();
   }
 
-  function hitHandler() {
+  function handleHit() {
     player.hit();
   }
 
-  function stayHandler() {
+  function handleStay() {
     player.stay();
-  }
-
-  function placeBetHandler(num) {
-    const err = player.placeBet(num);
   }
 
   return();
