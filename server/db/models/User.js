@@ -92,15 +92,27 @@ User.prototype.generateToken = function () {
 };
 
 User.prototype.addWin = async function () {
-  await this.increment("wins");
+  try {
+    await this.increment("wins");
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 User.prototype.addLoss = async function () {
-  await this.increment("losses");
+  try {
+    await this.increment("losses");
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 User.prototype.addDraw = async function () {
-  await this.increment("draws");
+  try {
+    await this.increment("draws");
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 User.prototype.getMoney = function () {
@@ -108,8 +120,12 @@ User.prototype.getMoney = function () {
 };
 
 User.prototype.updateMoney = async function (payout) {
-  let totalMoney = this.getMoney() + payout;
-  await this.update({ money: totalMoney });
+  try {
+    let totalMoney = this.getMoney() + payout;
+    await this.update({ money: totalMoney });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 /**

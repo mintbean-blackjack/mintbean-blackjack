@@ -14,25 +14,31 @@ async function seed() {
   console.log("db synced!");
 
   // Creating Users
-  const users = await Promise.all([
-    User.create({
-      username: "karen",
-      email: "karen@email.com",
-      password: "247blackjack",
-    }),
-    User.create({
-      username: "fernanda",
-      email: "fernanda@email.com",
-      password: "mintbeanbj",
-    }),
-    User.create({
-      username: "brenda",
-      email: "brenda@email.com",
-      password: "21hackathon",
-    }),
-  ]);
+  const user1 = await User.create({
+    username: "karen",
+    email: "karen@email.com",
+    password: "247blackjack",
+  });
 
-  console.log(`seeded ${users.length} users`);
+  const user2 = await User.create({
+    username: "fernanda",
+    email: "fernanda@email.com",
+    password: "mintbeanbj",
+  });
+
+  const user3 = await User.create({
+    username: "brenda",
+    email: "brenda@email.com",
+    password: "21hackathon",
+  });
+
+  //testing instance methods
+  // user1.addWin();
+  // user2.addLoss();
+  // user3.addDraw();
+  // console.log("user1 money: ", user1.getMoney());
+  // await user1.updateMoney(1000);
+
   console.log(`seeded successfully`);
 }
 
