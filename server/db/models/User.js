@@ -91,6 +91,27 @@ User.prototype.generateToken = function () {
   return jwt.sign({ id: this.id }, process.env.JWT);
 };
 
+User.prototype.addWin = async function () {
+  await this.increment("wins");
+};
+
+User.prototype.addLoss = async function () {
+  await this.increment("losses");
+};
+
+User.prototype.addDraw = async function () {
+  await this.increment("draws");
+};
+
+User.prototype.getMoney = function () {
+  return this.money;
+};
+
+User.prototype.updateMoney = async function (payout) {
+  let totalMoney = this.getMoney() + payout;
+  await this.update({ money: totalMoney });
+};
+
 /**
  * classMethods
  */
