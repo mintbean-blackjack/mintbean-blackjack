@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from './Button';
+import RulesModal from './RulesModal';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../store';
@@ -17,6 +18,9 @@ const GamePageNavbar = ({ handleClick, isLoggedIn }) => {
         {/* insert logo */}
         {/* <Link to="/home">{logo}</Link> */}
         <Button label="Rules" clickHandler={rulesClickHandler} />
+        {showRules ? (
+          <RulesModal rulesClickHandler={rulesClickHandler} />
+        ) : null}
       </div>
       {isLoggedIn ? (
         <div>
