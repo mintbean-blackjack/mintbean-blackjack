@@ -12,31 +12,33 @@ const GamePageNavbar = ({ handleClick, isLoggedIn }) => {
     setShowRules(!showRules);
   };
 
-  <div>
-    <nav>
-      <div>
-        {/* insert logo */}
-        {/* <Link to="/home">{logo}</Link> */}
-        <Button label="Rules" clickHandler={rulesClickHandler} />
-        {showRules ? (
-          <RulesModal rulesClickHandler={rulesClickHandler} />
-        ) : null}
-      </div>
-      {isLoggedIn ? (
+  return (
+    <div>
+      <nav>
         <div>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
+          {/* insert logo */}
+          {/* <Link to="/home">{logo}</Link> */}
+          <Button label="Rules" clickHandler={rulesClickHandler} />
+          {showRules ? (
+            <RulesModal rulesClickHandler={rulesClickHandler} />
+          ) : null}
         </div>
-      ) : (
-        <div>
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-        </div>
-      )}
-    </nav>
-    <hr />
-  </div>;
+        {isLoggedIn ? (
+          <div>
+            <a href="#" onClick={handleClick}>
+              Logout
+            </a>
+          </div>
+        ) : (
+          <div>
+            <Link to="/login">Login</Link>
+            <Link to="/signup">Sign Up</Link>
+          </div>
+        )}
+      </nav>
+      <hr />
+    </div>
+  );
 };
 
 /**

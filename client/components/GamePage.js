@@ -1,8 +1,8 @@
 import React from 'react';
+import GamePageNavBar from './GamePageNavBar';
 
-export const GamePage = props => {
+export const GamePage = (props) => {
   return (
-    // nav bar
-    // game table
-  )
-}
+    <GamePageNavBar /> // game table
+  );
+};
