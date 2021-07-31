@@ -13,6 +13,7 @@ export default class Game {
   }
 
   dealInitialHand() {
+    this.dealer.shuffle();
     this.player.hit();
     this.computerPlayer.hit();
     this.player.hit();
