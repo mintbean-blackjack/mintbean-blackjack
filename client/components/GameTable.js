@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import Game from '../classes/Game';
-import { Button } from './Button';
-import Card from './Card';
+import React, { useState } from "react";
+import Game from "../classes/Game";
+import { Button } from "./Button";
+import Card from "./Card";
 
 export const GameTable = () => {
   const [game, setGame] = useState(null);
@@ -15,23 +15,20 @@ export const GameTable = () => {
     setComputerPlayer(_game.computerPlayer);
   }
 
-  console.log('game in GameTable body >>>>', game)
-  console.log('player in GameTable body >>>>', player)
-  console.log('computerPlayer in GameTable body >>>>', computerPlayer)
-
   function handleDeal(num) {
     // player clicks on deal button after they've placed their bets (like in 247 blackjack)
-    // const err = game.player.placeBet(num);
-    // game.dealInitialHand();
-    console.log('in handleDeal')
-    console.log('game in handleDeal >>>>', game)
-    if (game) {
-      game.player.placeBet(num);
-      game.dealInitialHand();
-      console.log('player currentCards >>>>', game.player.currentCards)
-      console.log('computerPlayer currentCards >>>>', game.computerPlayer.currentCards)
-    }
+    game.player.placeBet(num);
+    game.dealInitialHand();
+    console.log('-------------')
+    console.log('player in handleDeal >>>>', player)
+    console.log('computerPlayer in handleDeal >>>>', computerPlayer)
+    setPlayer({ ...player, currentCards: player.currentCards });
+    setComputerPlayer({ ...computerPlayer, currentCards: computerPlayer.currentCards });
   }
+
+  console.log('-------------')
+  console.log('player in GameTable >>>>', player)
+  console.log('computerPlayer in GameTable >>>>', computerPlayer)
 
   function handlePlayAgain() {
     game.playAgain();
@@ -45,10 +42,10 @@ export const GameTable = () => {
     player.stay();
   }
 
-  return(
+  return (
     <div>
       <Button label="Start Game" clickHandler={handleStartGame} />
       <Button label="Deal" clickHandler={() => handleDeal(500)} />
     </div>
   );
-}
+};
