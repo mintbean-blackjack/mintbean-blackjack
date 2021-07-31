@@ -19,16 +19,9 @@ export const GameTable = () => {
     // player clicks on deal button after they've placed their bets (like in 247 blackjack)
     game.player.placeBet(num);
     game.dealInitialHand();
-    console.log('-------------')
-    console.log('player in handleDeal >>>>', player)
-    console.log('computerPlayer in handleDeal >>>>', computerPlayer)
     setPlayer({ ...player, currentCards: player.currentCards });
     setComputerPlayer({ ...computerPlayer, currentCards: computerPlayer.currentCards });
   }
-
-  console.log('-------------')
-  console.log('player in GameTable >>>>', player)
-  console.log('computerPlayer in GameTable >>>>', computerPlayer)
 
   function handlePlayAgain() {
     game.playAgain();

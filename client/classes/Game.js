@@ -18,7 +18,7 @@ export default class Game {
     this.computerPlayer.hit();
     this.player.hit();
     this.computerPlayer.hit();
-    this.findWinner();
+    this.findWinner(true);
   }
 
   playAgain() {
@@ -35,17 +35,30 @@ export default class Game {
     this.findWinner();
   }
 
-  findWinner() {
+  findWinner(isFirstHand = false) {
     let playerHand = this.player.getCardTotal();
     let dealerHand = this.computerPlayer.getCardTotal();
-    if (playerHand == dealerHand) {
-      this.outcome = 'Tied';
-    } else if (playerHand > dealerHand && playerHand <= 21) {
-      this.outcome = 'Win';
-    } else if (playerHand < dealerHand && dealerHand <= 21) {
-      this.outcome = 'Lose';
+    if (isFirstHand) {
+      if (playerHand === 21 || dealerHand === 21) {
+        if (playerHand === 21) {
+          this.outcome = 'Win';
+        } else {
+          this.outcome = 'Lose';
+        }
+        this.calculatePayout();
+      } else {
+        return;
+      }
+    } else {
+      if (playerHand == dealerHand) {
+        this.outcome = 'Tied';
+      } else if (playerHand > dealerHand && playerHand <= 21) {
+        this.outcome = 'Win';
+      } else if (playerHand < dealerHand && dealerHand <= 21) {
+        this.outcome = 'Lose';
+      }
+      this.calculatePayout();
     }
-    this.calculatePayout();
   }
 
   calculatePayout() {
