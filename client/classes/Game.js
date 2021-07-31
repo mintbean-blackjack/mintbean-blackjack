@@ -7,7 +7,7 @@ export default class Game {
     this.dealer = new Dealer();
     //will have to change logic for a logged in user
     this.player = new Player(username, this.dealer);
-    this.computerPlayer = new ComputerPlayer();
+    this.computerPlayer = new ComputerPlayer(null, this.dealer);
     this.allPlayers = [this.computerPlayer, this.player];
     this.outcome = '';
   }
