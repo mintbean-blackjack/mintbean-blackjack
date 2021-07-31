@@ -4,22 +4,21 @@ import { Button } from './Button';
 import Card from './Card';
 
 export const GameTable = () => {
-  let game;
-  let dealer;
+  const [game, setGame] = useState(null);
   const [player, setPlayer] = useState(null);
   const [computerPlayer, setComputerPlayer] = useState(null);
 
   function handleStartGame() {
-    game = new Game();
-    dealer = game.dealer;
-    setPlayer(game.player);
-    console.log('game.player >>>>', game.player)
-    console.log('game.computerPlayer >>>>>', game.computerPlayer)
-    console.log('game in handleStartGame >>>>>', game)
-    setComputerPlayer(game.computerPlayer);
+    const _game = new Game();
+    setGame(_game);
+    setPlayer(_game.player);
+    setComputerPlayer(_game.computerPlayer);
   }
 
   console.log('game in GameTable body >>>>', game)
+  console.log('player in GameTable body >>>>', player)
+  console.log('computerPlayer in GameTable body >>>>', computerPlayer)
+
   function handleDeal(num) {
     // player clicks on deal button after they've placed their bets (like in 247 blackjack)
     // const err = game.player.placeBet(num);
