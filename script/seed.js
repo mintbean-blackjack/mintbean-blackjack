@@ -16,19 +16,19 @@ async function seed() {
   // Creating Users
   const user1 = await User.create({
     username: "karen",
-    email: "karen@email.com",
+    // email: "karen@email.com",
     password: "247blackjack",
   });
 
   const user2 = await User.create({
     username: "fernanda",
-    email: "fernanda@email.com",
+    // email: "fernanda@email.com",
     password: "mintbeanbj",
   });
 
   const user3 = await User.create({
     username: "brenda",
-    email: "brenda@email.com",
+    // email: "brenda@email.com",
     password: "21hackathon",
   });
 
