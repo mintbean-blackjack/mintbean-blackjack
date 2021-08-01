@@ -1,15 +1,16 @@
-import React from 'react'
-
-import Navbar from './components/Navbar'
-import Routes from './Routes'
+import React from 'react';
+import { GamePage } from './components/GamePage';
+import LandingPageNavbar from './components/LandingPageNavbar';
+import Routes from './Routes';
 
 const App = () => {
   return (
     <div>
-      <Navbar />
+      <GamePage />
+      {/* <LandingPageNavbar /> */}
       <Routes />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
