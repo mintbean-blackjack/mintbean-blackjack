@@ -35,6 +35,7 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
+//route for user to check their own info
 router.get("/me", async (req, res, next) => {
   try {
     res.send(
