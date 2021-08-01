@@ -24,16 +24,19 @@ export const GameTable = () => {
     setComputerPlayer({ ...computerPlayer, currentCards: computerPlayer.currentCards });
   }
 
-  function handlePlayAgain() {
-    game.playAgain();
-  }
-
   function handleHit() {
-    player.hit();
+    game.player.hit();
+    game.checkForBust();
+    game.checkForBlackJack();
+    setPlayer({ ...player, currentCards: player.currentCards, totalMoney: game.player.totalMoney });
   }
-
+  
   function handleStay() {
     player.stay();
+  }
+  
+  function handlePlayAgain() {
+    game.playAgain();
   }
 
   return (
@@ -42,7 +45,8 @@ export const GameTable = () => {
       {game ? (
         <div>
           <BetInput player={player} setPlayer={setPlayer} />
-          <Button label="Deal" clickHandler={() => handleDeal()} />
+          <Button label="Deal" clickHandler={handleDeal} />
+          <Button label="Hit" clickHandler={handleHit} />
         </div>
       ) : (
         <></>
