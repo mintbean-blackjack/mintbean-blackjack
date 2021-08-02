@@ -4,11 +4,17 @@ import { fetchUser } from "../store/user";
 import { Button } from "./Button";
 import { BetInput } from "./BetInput";
 import Card from "./Card";
+import PlayGameModal from "./PlayGameModal";
 
 export const GameTable = () => {
   const [game, setGame] = useState(null);
   const [player, setPlayer] = useState(null);
   const [computerPlayer, setComputerPlayer] = useState(null);
+  const [showPlayGameModal, setShowPlayGameModal] = useState(() => false);
+
+  const playGameClickHandler = () => {
+    setShowPlayGameModal(!showPlayGameModal);
+  };
 
   function handleStartGame() {
     //before creating game, check if local storage player exists (logged in user is stored upon log in and removed upon log out);
@@ -25,7 +31,7 @@ export const GameTable = () => {
         })
       );
     }
-    
+
     const _game = new Game();
     setGame(_game);
     setPlayer(_game.player);
@@ -37,27 +43,37 @@ export const GameTable = () => {
     game.player.placeBet(player.currentBetAmount);
     game.dealInitialHand();
     setPlayer({ ...player, currentCards: player.currentCards });
-    setComputerPlayer({ ...computerPlayer, currentCards: computerPlayer.currentCards });
+    setComputerPlayer({
+      ...computerPlayer,
+      currentCards: computerPlayer.currentCards,
+    });
   }
 
   function handleHit() {
     game.player.hit();
     game.checkForBust();
     game.checkForBlackJack();
-    setPlayer({ ...player, currentCards: player.currentCards, totalMoney: game.player.totalMoney });
+    setPlayer({
+      ...player,
+      currentCards: player.currentCards,
+      totalMoney: game.player.totalMoney,
+    });
   }
-  
+
   function handleStay() {
     player.stay();
   }
-  
+
   function handlePlayAgain() {
     game.playAgain();
   }
 
   return (
     <div>
-      <Button label="Start Game" clickHandler={handleStartGame} />
+      <Button label="Start Game" clickHandler={playGameClickHandler} />
+      {showPlayGameModal ? (
+        <PlayGameModal rulesClickHandler={playGameClickHandler} />
+      ) : null}
       {game ? (
         <div>
           <BetInput player={player} setPlayer={setPlayer} />
