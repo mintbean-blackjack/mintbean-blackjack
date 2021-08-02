@@ -14,7 +14,7 @@ export const GameTable = () => {
     dealer = _dealer;
     setPlayer(_player);
     //save to local storage
-    window.localStorage.setItem("currentPlayer", _player);
+    window.localStorage.setItem("currentPlayer", JSON.stringify(_player));
     setComputerPlayer(_computerPlayer);
   }
 
