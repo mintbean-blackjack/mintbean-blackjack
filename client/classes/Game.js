@@ -26,7 +26,7 @@ export default class Game {
   }
 
   checkForNatural() {
-    // if either player is deal a 21, they're automatically the winner
+    // if either player is dealt a 21, they're automatically the winner
     const [playerHand, dealerHand] = this.getCardTotals();
     if (playerHand === 21 || dealerHand === 21) {
       if (playerHand === 21) {
@@ -67,7 +67,7 @@ export default class Game {
   findWinner() {
     // gets called when they player clicks on the "stand" button
     const [playerHand, dealerHand] = this.getCardTotals();
-    if (playerHand == dealerHand) {
+    if (playerHand === dealerHand) {
       this.outcome = "Tied";
     } else if (playerHand > dealerHand && playerHand <= 21) {
       this.outcome = "Win";
