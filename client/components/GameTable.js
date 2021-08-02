@@ -25,7 +25,7 @@ export const GameTable = () => {
         })
       );
     }
-    
+
     const _game = new Game();
     setGame(_game);
     setPlayer(_game.player);
@@ -36,21 +36,36 @@ export const GameTable = () => {
     // player clicks on deal button after they've placed their bets (like in 247 blackjack)
     game.player.placeBet(player.currentBetAmount);
     game.dealInitialHand();
-    setPlayer({ ...player, currentCards: player.currentCards });
-    setComputerPlayer({ ...computerPlayer, currentCards: computerPlayer.currentCards });
+    const outcome = game.checkForNatural();
+    const _player = { ...player, currentCards: player.currentCards };
+    outcome
+      ? setPlayer({
+          ..._player,
+          totalMoney: game.player.totalMoney,
+          [outcome]: game.player[outcome],
+        })
+      : setPlayer({ ..._player });
+    setComputerPlayer({
+      ...computerPlayer,
+      currentCards: computerPlayer.currentCards,
+    });
   }
 
   function handleHit() {
     game.player.hit();
     game.checkForBust();
     game.checkForBlackJack();
-    setPlayer({ ...player, currentCards: player.currentCards, totalMoney: game.player.totalMoney });
+    setPlayer({
+      ...player,
+      currentCards: player.currentCards,
+      totalMoney: game.player.totalMoney,
+    });
   }
-  
+
   function handleStay() {
     player.stay();
   }
-  
+
   function handlePlayAgain() {
     game.playAgain();
   }
