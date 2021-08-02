@@ -71,7 +71,15 @@ export const GameTable = () => {
 
   function handleStay() {
     // player.stay();
-    game.computerPlayer.play();
+    const didPlay = game.computerPlayer.play();
+    if (didPlay) {
+      setComputerPlayer({
+        ...computerPlayer,
+        currentCards: game.computerPlayer.currentCards,
+      });
+    }
+    const outcome = game.findWinner();
+    updatePlayer(outcome);
   }
 
   function handlePlayAgain() {
@@ -89,12 +97,12 @@ export const GameTable = () => {
             setToggleDeal={setToggleDeal}
           />
           {toggleDeal && <Button label="Deal" clickHandler={handleDeal} />}
-          {toggleHitAndStay &&
+          {toggleHitAndStay && (
             <div>
               <Button label="Hit" clickHandler={handleHit} />
               <Button label="Stay" clickHandler={handleStay} />
-            </div> 
-          }
+            </div>
+          )}
         </div>
       ) : (
         <></>

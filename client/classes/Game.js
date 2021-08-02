@@ -67,18 +67,24 @@ export default class Game {
 
   findWinner() {
     // gets called when they player clicks on the "stand" button
+    console.log('----- findWinner -------')
     const [playerHand, dealerHand] = this.getCardTotals();
+    console.log('playerHand =', playerHand)
+    console.log('dealerHand =', dealerHand)
     if (playerHand === dealerHand) {
       this.outcome = "draws";
-    } else if (playerHand > dealerHand && playerHand <= 21) {
+    } else if (playerHand > dealerHand) {
       this.outcome = "wins";
-    } else if (playerHand < dealerHand && dealerHand <= 21) {
+    } else if (playerHand < dealerHand) {
       this.outcome = "losses";
     }
+    console.log('this.outcome =', this.outcome)
     this.calculatePayout();
+    return this.outcome;
   }
   
   calculatePayout() {
+    console.log('------ calculatePayout --------')
     let payout;
     if (this.outcome === "wins") {
       payout = this.player.currentBetAmount * 1.5;
@@ -87,12 +93,16 @@ export default class Game {
     } else {
       payout = 0;
     }
+    console.log('payout =', payout)
     this.displayWinner(payout);
   }
   
   displayWinner(payout) {
+    console.log('-------- displayWinner -------')
     this.player.updateTotalMoney(payout);
     this.player.updateOutcome(this.outcome);
+    console.log('payout =', payout)
+    console.log('outcome =', this.outcome)
     updateLocalStorage(this.outcome, payout);
     if (this.outcome === "wins") {
       //add logic to check if user is logged in; use thunk actions to update win and payout in db
