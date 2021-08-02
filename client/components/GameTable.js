@@ -11,6 +11,7 @@ export const GameTable = () => {
   const [computerPlayer, setComputerPlayer] = useState(null);
 
   const [toggleDeal, setToggleDeal] = useState(false);
+  const [toggleHit, setToggleHit] = useState(false);
 
   function handleStartGame() {
     //before creating game, check if local storage player exists (logged in user is stored upon log in and removed upon log out);
@@ -39,13 +40,15 @@ export const GameTable = () => {
     game.player.placeBet(player.currentBetAmount);
     game.dealInitialHand();
     const outcome = game.checkForNatural();
-    console.log("outcome in checkForNatural =", outcome);
     updatePlayer(outcome);
     setComputerPlayer({
       ...computerPlayer,
       currentCards: computerPlayer.currentCards,
     });
     setToggleDeal(false);
+    if (!outcome) {
+      setToggleHit(true);
+    }
   }
 
   function handleHit() {
@@ -90,7 +93,7 @@ export const GameTable = () => {
             setToggleDeal={setToggleDeal}
           />
           {toggleDeal && <Button label="Deal" clickHandler={handleDeal} />}
-          <Button label="Hit" clickHandler={handleHit} />
+          {toggleHit && <Button label="Hit" clickHandler={handleHit} />}
         </div>
       ) : (
         <></>
