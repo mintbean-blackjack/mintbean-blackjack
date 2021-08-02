@@ -70,7 +70,7 @@ export const GameTable = () => {
   }
 
   function handleStay() {
-    player.stay();
+    // player.stay();
     game.computerPlayer.play();
   }
 
