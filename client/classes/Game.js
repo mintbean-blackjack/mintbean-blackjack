@@ -27,8 +27,6 @@ export default class Game {
 
   checkForNatural() {
     const [playerHand, dealerHand] = this.getCardTotals();
-    console.log('playerHand =', playerHand)
-    console.log('dealerHand =', dealerHand)
     if (playerHand === 21 || dealerHand === 21) {
       if (playerHand === 21) {
         this.outcome = "wins";
@@ -47,7 +45,7 @@ export default class Game {
   checkForBlackJack() {
     // after the player receives a card, if their total is 21 then they should stand (they haven't necessarily won, though)
     if (this.player.getCardTotal() === 21) {
-      this.player.stand();
+      this.player.stay();
     }
   }
 
