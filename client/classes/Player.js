@@ -1,10 +1,19 @@
+//access player from local storage
+const { username, totalMoney, wins, losses, draws } = JSON.parse(
+  window.localStorage.getItem("currentPlayer")
+);
+
 export default class Player {
-  constructor(name, dealer) {
-    this.name = name;
+  //construct player from local storage
+  constructor(dealer) {
+    this.name = username;
     this.currentCards = [];
-    this.totalMoney = 2500;
+    this.totalMoney = totalMoney;
     this.currentBetAmount = 0;
     this.dealer = dealer;
+    this.wins = wins;
+    this.losses = losses;
+    this.draws = draws;
   }
 
   // player takes a card
@@ -24,12 +33,12 @@ export default class Player {
 
   getCardTotal() {
     // count the number of aces
-    const acesArray = this.currentCards.filter((card) => card.value === 'A');
-    const faceCards = ['J', 'Q', 'K'];
+    const acesArray = this.currentCards.filter((card) => card.value === "A");
+    const faceCards = ["J", "Q", "K"];
 
     // temporarily add up non-ace cards
     let total = this.currentCards
-      .filter((card) => card.value !== 'A')
+      .filter((card) => card.value !== "A")
       .reduce((total, card) => {
         if (faceCards.includes(card.value)) {
           return total + 10;
@@ -65,5 +74,4 @@ export default class Player {
   updateTotalMoney(payout) {
     this.totalMoney += payout;
   }
-
 }

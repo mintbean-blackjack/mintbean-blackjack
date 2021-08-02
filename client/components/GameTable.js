@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Game from "../classes/Game";
+import { fetchUser } from "../store/user";
 import { Button } from "./Button";
 import { BetInput } from "./BetInput";
 import Card from "./Card";
@@ -10,6 +11,21 @@ export const GameTable = () => {
   const [computerPlayer, setComputerPlayer] = useState(null);
 
   function handleStartGame() {
+    //before creating game, check if local storage player exists (logged in user is stored upon log in and removed upon log out);
+    //if local storage player does not exist, add guest player to local storage
+    if (!window.localStorage.getItem("currentPlayer")) {
+      window.localStorage.setItem(
+        "currentPlayer",
+        JSON.stringify({
+          username: "Guest",
+          totalMoney: 2500,
+          wins: 0,
+          losses: 0,
+          draws: 0,
+        })
+      );
+    }
+
     const _game = new Game();
     setGame(_game);
     setPlayer(_game.player);

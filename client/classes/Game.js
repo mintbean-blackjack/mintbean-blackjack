@@ -5,9 +5,8 @@ import ComputerPlayer from "./ComputerPlayer";
 export default class Game {
   constructor(username) {
     this.dealer = new Dealer();
-    //will have to change logic for a logged in user
-    this.player = new Player(username, this.dealer);
-    this.computerPlayer = new ComputerPlayer(null, this.dealer);
+    this.player = new Player(this.dealer);
+    this.computerPlayer = new ComputerPlayer();
     this.allPlayers = [this.computerPlayer, this.player];
     this.outcome = "";
   }
@@ -20,6 +19,13 @@ export default class Game {
     this.computerPlayer.hit();
     this.checkForNatural();
   }
+
+  playAgain() {
+    this.player.updateCurrentCards([]);
+    this.computerPlayer.updateCurrentCards([]);
+    this.outcome = "";
+    if (this.dealer.deck.length <= 26) {
+      this.dealer.shuffle();
 
   getCardTotals() {
     return [this.player.getCardTotal(), this.computerPlayer.getCardTotal()];
@@ -39,6 +45,7 @@ export default class Game {
       this.calculatePayout();
     } else {
       return;
+
     }
   }
 
@@ -92,10 +99,17 @@ export default class Game {
   displayWinner(payout) {
     this.player.updateTotalMoney(payout);
     if (this.outcome === "Win") {
+      //add logic to check if user is logged in; use thunk actions to update win and payout in db
+      //also retreive from local storage, update, convert back to string, store again
+      updateLocalStorage("wins", payout);
+      return `Congratulations! You ${this.outcome} $${payout}!`;
+    } else if (this.outcome === "Lose") {
+      updateLocalStorage("losses", payout);
       return `Congratulations! You ${this.outcome} $${payout}!`;
     } else if (this.outcome === "Lose") {
       return `Sorry! You ${this.outcome} $${-payout} :(`;
     } else {
+      updateLocalStorage("draws", 0);
       return `You tied! You get back all your money.`;
     }
   }
@@ -110,3 +124,10 @@ export default class Game {
     //player can now place a bet
   }
 }
+
+const updateLocalStorage = (outcomeType, payout) => {
+  let storedPlayer = JSON.parse(window.localStorage.getItem("currentPlayer"));
+  storedPlayer[outcomeType]++;
+  storedPlayer.totalMoney += payout;
+  window.localStorage.setItem("currentPlayer", JSON.stringify(storedPlayer));
+};
