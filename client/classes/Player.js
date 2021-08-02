@@ -22,11 +22,9 @@ export default class Player {
     this.currentCards.push(card);
   }
 
-  // edge case of handling aces
   getCardTotal() {
     // count the number of aces
     const acesArray = this.currentCards.filter((card) => card.value === 'A');
-
     const faceCards = ['J', 'Q', 'K'];
 
     // temporarily add up non-ace cards
@@ -54,4 +52,18 @@ export default class Player {
 
     return total;
   }
+
+  placeBet(num) {
+    const bet = Number(num);
+    if (bet <= this.totalMoney) {
+      this.currentBetAmount = bet;
+    } else {
+      return "You do not have enough money. Choose a smaller amount.";
+    }
+  }
+
+  updateTotalMoney(payout) {
+    this.totalMoney += payout;
+  }
+
 }
