@@ -91,6 +91,7 @@ User.prototype.correctPassword = function (candidatePwd) {
 User.prototype.generateToken = function () {
   return jwt.sign({ id: this.id }, process.env.JWT);
 };
+<<<<<<< HEAD
 
 User.prototype.addWin = async function () {
   try {
@@ -116,6 +117,33 @@ User.prototype.addDraw = async function () {
   }
 };
 
+=======
+
+User.prototype.addWin = async function () {
+  try {
+    await this.increment("wins");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+User.prototype.addLoss = async function () {
+  try {
+    await this.increment("losses");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+User.prototype.addDraw = async function () {
+  try {
+    await this.increment("draws");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+>>>>>>> c1158a087c2a7ebc8837b05be60097aa9cad910f
 User.prototype.getMoney = function () {
   return this.money;
 };

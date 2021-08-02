@@ -5,6 +5,9 @@ export default class Player {
     this.totalMoney = 2500;
     this.currentBetAmount = 0;
     this.dealer = dealer;
+    this.wins = 0;
+    this.losses = 0;
+    this.draws = 0;
   }
 
   // player takes a card
@@ -22,16 +25,14 @@ export default class Player {
     this.currentCards.push(card);
   }
 
-  // edge case of handling aces
   getCardTotal() {
     // count the number of aces
-    const acesArray = this.currentCards.filter((card) => card.value === 'A');
-
-    const faceCards = ['J', 'Q', 'K'];
+    const acesArray = this.currentCards.filter((card) => card.value === "A");
+    const faceCards = ["J", "Q", "K"];
 
     // temporarily add up non-ace cards
     let total = this.currentCards
-      .filter((card) => card.value !== 'A')
+      .filter((card) => card.value !== "A")
       .reduce((total, card) => {
         if (faceCards.includes(card.value)) {
           return total + 10;
@@ -53,5 +54,18 @@ export default class Player {
     }
 
     return total;
+  }
+
+  placeBet(num) {
+    const bet = Number(num);
+    if (bet <= this.totalMoney) {
+      this.currentBetAmount = bet;
+    } else {
+      return "You do not have enough money. Choose a smaller amount.";
+    }
+  }
+
+  updateTotalMoney(payout) {
+    this.totalMoney += payout;
   }
 }
