@@ -11,7 +11,7 @@ export const GameTable = () => {
   const [computerPlayer, setComputerPlayer] = useState(null);
 
   const [toggleDeal, setToggleDeal] = useState(false);
-  const [toggleHit, setToggleHit] = useState(false);
+  const [toggleHitAndStay, setToggleHitAndStay] = useState(false);
 
   function handleStartGame() {
     //before creating game, check if local storage player exists (logged in user is stored upon log in and removed upon log out);
@@ -47,7 +47,7 @@ export const GameTable = () => {
     });
     setToggleDeal(false);
     if (!outcome) {
-      setToggleHit(true);
+      setToggleHitAndStay(true);
     }
   }
 
@@ -56,11 +56,6 @@ export const GameTable = () => {
     const outcome = game.checkForBust();
     updatePlayer(outcome);
     game.checkForBlackJack();
-    setPlayer({
-      ...player,
-      currentCards: player.currentCards,
-      totalMoney: game.player.totalMoney,
-    });
   }
 
   function updatePlayer(outcome) {
@@ -76,6 +71,7 @@ export const GameTable = () => {
 
   function handleStay() {
     player.stay();
+    game.computerPlayer.play();
   }
 
   function handlePlayAgain() {
@@ -93,7 +89,12 @@ export const GameTable = () => {
             setToggleDeal={setToggleDeal}
           />
           {toggleDeal && <Button label="Deal" clickHandler={handleDeal} />}
-          {toggleHit && <Button label="Hit" clickHandler={handleHit} />}
+          {toggleHitAndStay &&
+            <div>
+              <Button label="Hit" clickHandler={handleHit} />
+              <Button label="Stay" clickHandler={handleStay} />
+            </div> 
+          }
         </div>
       ) : (
         <></>

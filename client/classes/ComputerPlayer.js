@@ -7,10 +7,9 @@ export default class ComputerPlayer extends Player {
   }
   play() {
     const { cardTotal } = this;
-    if (cardTotal >= 17) {
-      this.stay();
-    } else if (cardTotal < 16) {
+    while (cardTotal < 16) {
       this.hit();
     }
+    this.stay();
   }
 }

@@ -73,7 +73,10 @@ export default class Player {
   }
 
   updateOutcome(outcome) {
+    console.log('outcome in updateOutcome =', outcome)
+    console.log(`this[${outcome}] before incrementing =`, this[outcome])
     this[outcome]++;
+    console.log(`this[${outcome}] after incrementing =`, this[outcome])
   }
 
   updateTotalMoney(payout) {
