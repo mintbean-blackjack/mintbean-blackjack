@@ -25,7 +25,7 @@ export const GameTable = () => {
         })
       );
     }
-
+    
     const _game = new Game();
     setGame(_game);
     setPlayer(_game.player);
