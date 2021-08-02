@@ -1,23 +1,19 @@
 //access player from local storage
-const {
-  storedName,
-  storedMoney,
-  storedWins,
-  storedLosses,
-  storedDraws,
-} = JSON.parse(window.localStorage.getItem("currentPlayer"));
+const { username, totalMoney, wins, losses, draws } = JSON.parse(
+  window.localStorage.getItem("currentPlayer")
+);
 
 export default class Player {
   //construct player from local storage
   constructor(dealer) {
-    this.name = storedName;
+    this.name = username;
     this.currentCards = [];
-    this.totalMoney = storedMoney;
+    this.totalMoney = totalMoney;
     this.currentBetAmount = 0;
     this.dealer = dealer;
-    this.wins = storedWins;
-    this.losses = storedLosses;
-    this.draws = storedDraws;
+    this.wins = wins;
+    this.losses = losses;
+    this.draws = draws;
   }
 
   // player takes a card
