@@ -65,7 +65,7 @@ const User = db.define("user", {
       notEmpty: true,
     },
   },
-  money: {
+  totalMoney: {
     type: Sequelize.INTEGER,
     defaultValue: 2500,
     allowNull: false,
@@ -122,8 +122,8 @@ User.prototype.getMoney = function () {
 
 User.prototype.updateMoney = async function (payout) {
   try {
-    let totalMoney = this.getMoney() + payout;
-    await this.update({ money: totalMoney });
+    let total = this.getMoney() + payout;
+    await this.update({ totalMoney: total });
   } catch (err) {
     console.log(err);
   }

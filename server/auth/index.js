@@ -17,22 +17,16 @@ router.post("/login", async (req, res, next) => {
 
 router.post("/signup", async (req, res, next) => {
   //grab player info from local storage for new user:
-  let {
-    currentWins,
-    currentLosses,
-    currentDraws,
-    currentTotalMoney,
-  } = window.localStorage.getItem("currentPlayer");
   try {
     //deconstruct req.body to avoid injection
-    const { username, password } = req.body;
+    const { username, password, wins, losses, draws, totalMoney } = req.body;
     const user = await User.create({
       username,
       password,
-      wins: currentWins,
-      losses: currentLosses,
-      draws: currentDraws,
-      totalMoney: currentTotalMoney,
+      wins,
+      losses,
+      draws,
+      totalMoney,
     });
     res.send({ token: await user.generateToken() });
     console.log("token from signup>>>>", user.generateToken());

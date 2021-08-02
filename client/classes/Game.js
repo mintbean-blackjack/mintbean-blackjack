@@ -5,7 +5,6 @@ import ComputerPlayer from "./ComputerPlayer";
 export default class Game {
   constructor() {
     this.dealer = new Dealer();
-    //will have to change logic for a logged in user
     this.player = new Player(this.dealer);
     this.computerPlayer = new ComputerPlayer();
     this.allPlayers = [this.computerPlayer, this.player];
@@ -77,8 +76,8 @@ export default class Game {
 }
 
 const updateLocalStorage = (outcomeType, payout) => {
-  let storedPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
+  let storedPlayer = JSON.parse(window.localStorage.getItem("currentPlayer"));
   storedPlayer[outcomeType]++;
   storedPlayer.totalMoney += payout;
-  localStorage.setItem("currentPlayer", JSON.stringify(storedPlayer));
+  window.localStorage.setItem("currentPlayer", JSON.stringify(storedPlayer));
 };

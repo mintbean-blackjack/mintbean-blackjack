@@ -24,6 +24,8 @@ export const me = () => async (dispatch) => {
         authorization: token,
       },
     });
+    //store signed in user as currentPlayer
+    window.localStorage.setItem("currentPlayer", JSON.stringify(res.data));
     return dispatch(setAuth(res.data));
   }
 };
