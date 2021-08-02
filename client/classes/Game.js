@@ -20,13 +20,6 @@ export default class Game {
     this.checkForNatural();
   }
 
-  playAgain() {
-    this.player.updateCurrentCards([]);
-    this.computerPlayer.updateCurrentCards([]);
-    this.outcome = "";
-    if (this.dealer.deck.length <= 26) {
-      this.dealer.shuffle();
-
   getCardTotals() {
     return [this.player.getCardTotal(), this.computerPlayer.getCardTotal()];
   }
