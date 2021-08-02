@@ -15,15 +15,16 @@ const User = db.define("user", {
       notEmpty: true,
     },
   },
-  email: {
-    type: Sequelize.STRING,
-    unique: true,
-    allowNull: false,
-    validate: {
-      isEmail: true,
-      notEmpty: true,
-    },
-  },
+  //removing email from signup for now as it's not on the frontend
+  // email: {
+  //   type: Sequelize.STRING,
+  //   unique: true,
+  //   allowNull: false,
+  //   validate: {
+  //     isEmail: true,
+  //     notEmpty: true,
+  //   },
+  // },
   password: {
     type: Sequelize.STRING,
     allowNull: false,
