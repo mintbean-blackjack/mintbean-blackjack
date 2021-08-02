@@ -37,14 +37,8 @@ export const GameTable = () => {
     game.player.placeBet(player.currentBetAmount);
     game.dealInitialHand();
     const outcome = game.checkForNatural();
-    const _player = { ...player, currentCards: player.currentCards };
-    outcome
-      ? setPlayer({
-          ..._player,
-          totalMoney: game.player.totalMoney,
-          [outcome]: game.player[outcome],
-        })
-      : setPlayer({ ..._player });
+    console.log('outcome in checkForNatural =', outcome)
+    updatePlayer(outcome);
     setComputerPlayer({
       ...computerPlayer,
       currentCards: computerPlayer.currentCards,
@@ -53,13 +47,25 @@ export const GameTable = () => {
 
   function handleHit() {
     game.player.hit();
-    game.checkForBust();
+    const outcome = game.checkForBust();
+    updatePlayer(outcome);
     game.checkForBlackJack();
     setPlayer({
       ...player,
       currentCards: player.currentCards,
       totalMoney: game.player.totalMoney,
     });
+  }
+
+  function updatePlayer(outcome) {
+    const _player = { ...player, currentCards: player.currentCards };
+    outcome
+      ? setPlayer({
+          ..._player,
+          totalMoney: game.player.totalMoney,
+          [outcome]: game.player[outcome],
+        })
+      : setPlayer({ ..._player });
   }
 
   function handleStay() {

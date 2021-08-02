@@ -26,10 +26,9 @@ export default class Game {
   }
 
   checkForNatural() {
-    // if either player is dealt a 21, they're automatically the winner
-    // const [playerHand, dealerHand] = this.getCardTotals();
-    const playerHand = 15;
-    const dealerHand = 21;
+    const [playerHand, dealerHand] = this.getCardTotals();
+    console.log('playerHand =', playerHand)
+    console.log('dealerHand =', dealerHand)
     if (playerHand === 21 || dealerHand === 21) {
       if (playerHand === 21) {
         this.outcome = "wins";
@@ -62,8 +61,9 @@ export default class Game {
         this.outcome = "wins";
       }
       this.calculatePayout();
+      return this.outcome;
     } else {
-      return;
+      return null;
     }
   }
 
