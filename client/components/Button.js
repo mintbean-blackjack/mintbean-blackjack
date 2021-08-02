@@ -1,5 +1,4 @@
 import React from "react";
-//className={`${label.toLowerCase().split(' ').join('-')}-button-container`}
 
 export const Button = ({ label, clickHandler }) => (
   <div
