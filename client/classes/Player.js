@@ -1,11 +1,12 @@
 //access player from local storage
-const { username, totalMoney, wins, losses, draws } = JSON.parse(
-  window.localStorage.getItem("currentPlayer")
-);
+// const { username, totalMoney, wins, losses, draws } = JSON.parse(
+//   window.localStorage.getItem("currentPlayer")
+// );
+// let currentPlayer = JSON.parse(window.localStorage.getItem("currentPlayer"));
 
 export default class Player {
   //construct player from local storage
-  constructor(dealer) {
+  constructor(username, totalMoney, wins, losses, draws, dealer) {
     this.name = username;
     this.currentCards = [];
     this.totalMoney = totalMoney;
@@ -18,7 +19,9 @@ export default class Player {
 
   // player takes a card
   hit() {
+    console.log('this.dealer in hit =', this.dealer)
     const card = this.dealer.deal();
+    console.log('card in hit >>>', card)
     this.updateCurrentCards(card);
   }
 

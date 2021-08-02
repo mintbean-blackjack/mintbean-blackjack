@@ -2,16 +2,20 @@ import Dealer from "./Dealer";
 import Player from "./Player";
 import ComputerPlayer from "./ComputerPlayer";
 
+const { username, totalMoney, wins, losses, draws } = JSON.parse(window.localStorage.getItem("currentPlayer"));
+
 export default class Game {
-  constructor(username) {
+  constructor() {
     this.dealer = new Dealer();
-    this.player = new Player(this.dealer);
-    this.computerPlayer = new ComputerPlayer();
+    this.player = new Player(username, totalMoney, wins, losses, draws, this.dealer);
+    this.computerPlayer = new ComputerPlayer(null, Infinity, null, null, null, this.dealer);
     this.allPlayers = [this.computerPlayer, this.player];
     this.outcome = "";
   }
 
   dealInitialHand() {
+    console.log('computerPlayer in dealInitialHand >>>', this.computerPlayer)
+    console.log('player in dealInitialHand >>>>', this.player)
     this.dealer.shuffle();
     this.player.hit();
     this.computerPlayer.hit();
@@ -19,13 +23,6 @@ export default class Game {
     this.computerPlayer.hit();
     this.checkForNatural();
   }
-
-  playAgain() {
-    this.player.updateCurrentCards([]);
-    this.computerPlayer.updateCurrentCards([]);
-    this.outcome = "";
-    if (this.dealer.deck.length <= 26) {
-      this.dealer.shuffle();
 
   getCardTotals() {
     return [this.player.getCardTotal(), this.computerPlayer.getCardTotal()];
