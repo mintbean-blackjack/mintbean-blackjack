@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Game from '../classes/Game';
+import {fetchUser} from '../store/user';
 
 export const GameTable = () => {
   let game;
@@ -12,6 +13,8 @@ export const GameTable = () => {
     const { _dealer, _player, _computerPlayer } = game;
     dealer = _dealer;
     setPlayer(_player);
+    //save to local storage
+    window.localStorage.setItem("currentPlayer", _player);
     setComputerPlayer(_computerPlayer);
   }
 

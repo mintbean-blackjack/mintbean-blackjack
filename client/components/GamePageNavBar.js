@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Button } from './Button';
-import RulesModal from './RulesModal';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { logout } from '../store';
+import React, { useState } from "react";
+import { Button } from "./Button";
+import RulesModal from "./RulesModal";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { logout } from "../store";
 
-const GamePageNavbar = ({ handleClick, isLoggedIn }) => {
+const GamePageNavbar = ({ isLoggedIn, handleClick }) => {
   const [showRules, setShowRules] = useState(() => false);
 
   const rulesClickHandler = () => {
