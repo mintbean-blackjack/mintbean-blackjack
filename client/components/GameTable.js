@@ -3,7 +3,8 @@ import Game from "../classes/Game";
 import { fetchUser } from "../store/user";
 import { Button } from "./Button";
 import { BetInput } from "./BetInput";
-import Card from "./Card";
+import { ShowCards } from "./ShowCards";
+import { Card } from "./Card";
 
 export const GameTable = () => {
   const [game, setGame] = useState(null);
@@ -12,6 +13,7 @@ export const GameTable = () => {
 
   const [toggleDeal, setToggleDeal] = useState(false);
   const [toggleHitAndStay, setToggleHitAndStay] = useState(false);
+  const [toggleShowCards, setToggleShowCards] = useState(false);
 
   function handleStartGame() {
     //before creating game, check if local storage player exists (logged in user is stored upon log in and removed upon log out);
@@ -46,6 +48,7 @@ export const GameTable = () => {
       currentCards: computerPlayer.currentCards,
     });
     setToggleDeal(false);
+    setToggleShowCards(true);
     if (!outcome) {
       setToggleHitAndStay(true);
     }
@@ -70,7 +73,6 @@ export const GameTable = () => {
   }
 
   function handleStay() {
-    // player.stay();
     const didPlay = game.computerPlayer.play();
     if (didPlay) {
       setComputerPlayer({
@@ -80,6 +82,7 @@ export const GameTable = () => {
     }
     const outcome = game.findWinner();
     updatePlayer(outcome);
+    setToggleHitAndStay(false);
   }
 
   function handlePlayAgain() {
@@ -101,6 +104,21 @@ export const GameTable = () => {
             <div>
               <Button label="Hit" clickHandler={handleHit} />
               <Button label="Stay" clickHandler={handleStay} />
+            </div>
+          )}
+          {toggleShowCards && (
+            <div>
+              {/* <ShowCards label="Player" cards={player.currentCards} />
+              <ShowCards
+                label="Computer Player"
+                cards={computerPlayer.currentCards}
+              /> */}
+              {player.currentCards.map((card, index) => (
+                <Card key={index} card={card} isVisible={true} />
+              ))}
+              {computerPlayer.currentCards.map((card, index) => (
+                <Card key={index} card={card} isVisible={index === 0} />
+              ))}
             </div>
           )}
         </div>
