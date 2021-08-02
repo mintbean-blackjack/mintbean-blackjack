@@ -3,7 +3,7 @@ import Player from "./Player";
 import ComputerPlayer from "./ComputerPlayer";
 
 export default class Game {
-  constructor() {
+  constructor(username) {
     this.dealer = new Dealer();
     this.player = new Player(this.dealer);
     this.computerPlayer = new ComputerPlayer();
@@ -12,11 +12,12 @@ export default class Game {
   }
 
   dealInitialHand() {
+    this.dealer.shuffle();
     this.player.hit();
     this.computerPlayer.hit();
     this.player.hit();
     this.computerPlayer.hit();
-    this.findWinner();
+    this.checkForNatural();
   }
 
   playAgain() {
@@ -25,18 +26,55 @@ export default class Game {
     this.outcome = "";
     if (this.dealer.deck.length <= 26) {
       this.dealer.shuffle();
-    }
-    //player can now place a bet
+
+  getCardTotals() {
+    return [this.player.getCardTotal(), this.computerPlayer.getCardTotal()];
   }
 
-  endGame() {
-    this.findWinner();
+  checkForNatural() {
+    // if either player is dealt a 21, they're automatically the winner
+    const [playerHand, dealerHand] = this.getCardTotals();
+    if (playerHand === 21 || dealerHand === 21) {
+      if (playerHand === 21) {
+        this.outcome = "Win";
+      } else if (dealerHand === 21) {
+        this.outcome = "Lose";
+      } else {
+        this.outcome = "Tied";
+      }
+      this.calculatePayout();
+    } else {
+      return;
+
+    }
+  }
+
+  checkForBlackJack() {
+    // after the player receives a card, if their total is 21 then they should stand (they haven't necessarily won, though)
+    if (this.player.getCardTotal() === 21) {
+      this.player.stand();
+    }
+  }
+
+  checkForBust() {
+    // after the player receives a card, if their total is > 21 then they've lost
+    const [playerHand, dealerHand] = this.getCardTotals();
+    if (playerHand > 21 || dealerHand > 21) {
+      if (playerHand > 21) {
+        this.outcome = "Lose";
+      } else {
+        this.outcome = "Win";
+      }
+      this.calculatePayout();
+    } else {
+      return;
+    }
   }
 
   findWinner() {
-    let playerHand = this.player.getCardTotal();
-    let dealerHand = this.computerPlayer.getCardTotal();
-    if (playerHand == dealerHand) {
+    // gets called when they player clicks on the "stand" button
+    const [playerHand, dealerHand] = this.getCardTotals();
+    if (playerHand === dealerHand) {
       this.outcome = "Tied";
     } else if (playerHand > dealerHand && playerHand <= 21) {
       this.outcome = "Win";
@@ -45,7 +83,7 @@ export default class Game {
     }
     this.calculatePayout();
   }
-
+  
   calculatePayout() {
     let payout;
     if (this.outcome === "Win") {
@@ -57,7 +95,7 @@ export default class Game {
     }
     this.displayWinner(payout);
   }
-
+  
   displayWinner(payout) {
     this.player.updateTotalMoney(payout);
     if (this.outcome === "Win") {
@@ -67,11 +105,23 @@ export default class Game {
       return `Congratulations! You ${this.outcome} $${payout}!`;
     } else if (this.outcome === "Lose") {
       updateLocalStorage("losses", payout);
+      return `Congratulations! You ${this.outcome} $${payout}!`;
+    } else if (this.outcome === "Lose") {
       return `Sorry! You ${this.outcome} $${-payout} :(`;
     } else {
       updateLocalStorage("draws", 0);
       return `You tied! You get back all your money.`;
     }
+  }
+
+  playAgain() {
+    this.player.updateCurrentCards([]);
+    this.computerPlayer.updateCurrentCards([]);
+    this.outcome = "";
+    if (this.dealer.deck.length <= 26) {
+      this.dealer.shuffle();
+    }
+    //player can now place a bet
   }
 }
 
