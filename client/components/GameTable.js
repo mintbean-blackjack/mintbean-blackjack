@@ -13,10 +13,6 @@ export const GameTable = () => {
   const [showPlayGameModal, setShowPlayGameModal] = useState(() => false);
 
   const playGameClickHandler = () => {
-    setShowPlayGameModal(!showPlayGameModal);
-  };
-
-  function handleStartGame() {
     //before creating game, check if local storage player exists (logged in user is stored upon log in and removed upon log out);
     //if local storage player does not exist, add guest player to local storage
     if (!window.localStorage.getItem("currentPlayer")) {
@@ -31,11 +27,18 @@ export const GameTable = () => {
         })
       );
     }
+    //check if game exists, if not, create new game
+    if (!game) {
+      const _game = new Game();
+      setGame(_game);
+      console.log("new game is set");
+    }
+    setShowPlayGameModal(!showPlayGameModal);
+  };
 
-    const _game = new Game();
-    setGame(_game);
-    setPlayer(_game.player);
-    setComputerPlayer(_game.computerPlayer);
+  function handleStartGame() {
+    setPlayer(game.player);
+    setComputerPlayer(game.computerPlayer);
   }
 
   function handleDeal() {
@@ -72,7 +75,10 @@ export const GameTable = () => {
     <div>
       <Button label="Start Game" clickHandler={playGameClickHandler} />
       {showPlayGameModal ? (
-        <PlayGameModal rulesClickHandler={playGameClickHandler} />
+        <PlayGameModal
+          playGameClickHandler={playGameClickHandler}
+          startGameFunc={handleStartGame}
+        />
       ) : null}
       {game ? (
         <div>

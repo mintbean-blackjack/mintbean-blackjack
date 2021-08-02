@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Button, Modal } from "semantic-ui-react";
 import "../styles.css";
 
-const PlayGameModal = ({ playGameClickHandler }) => {
+const PlayGameModal = ({ playGameClickHandler, startGameFunc }) => {
   const [open, setOpen] = useState(true);
+  const [game, setGame] = useState(null);
+
   return (
     <Modal
       className="play-game-modal"
@@ -17,6 +19,10 @@ const PlayGameModal = ({ playGameClickHandler }) => {
             console.log(
               "wipe out local storage || reset game data on logged in user"
             );
+
+            // startGameFunc(game);
+            setOpen(false);
+            playGameClickHandler();
           }}
         >
           NEW GAME
@@ -24,6 +30,9 @@ const PlayGameModal = ({ playGameClickHandler }) => {
         <Button
           onClick={() => {
             console.log("continue with play game");
+            // startGameFunc(game);
+            setOpen(false);
+            playGameClickHandler();
           }}
         >
           RESUME
@@ -36,7 +45,7 @@ const PlayGameModal = ({ playGameClickHandler }) => {
             playGameClickHandler();
           }}
         >
-          Close
+          Cancel
         </Button>
       </Modal.Actions>
     </Modal>

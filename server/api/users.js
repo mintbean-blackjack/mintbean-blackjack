@@ -71,7 +71,24 @@ router.put("/:id/updateMoney", async (req, res, next) => {
     const user = await User.findByPk(req.params.id);
     //using instance methods defined in User model
     const { payout } = req.body;
+    console.log("payout datatype: ", typeof payout);
     await user.updateMoney(payout);
+    res.sendStatus(202);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/:id/resetStats", async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.params.id);
+    //using instance methods defined in User model
+    await user.update({
+      wins: 0,
+      losses: 0,
+      draws: 0,
+      totalMoney: 2500,
+    });
     res.sendStatus(202);
   } catch (error) {
     next(error);
