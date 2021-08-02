@@ -3,21 +3,22 @@ import Player from './Player';
 import ComputerPlayer from './ComputerPlayer';
 
 export default class Game {
-  constructor() {
+  constructor(username) {
     this.dealer = new Dealer();
     //will have to change logic for a logged in user
-    this.player = new Player(this.dealer);
-    this.computerPlayer = new ComputerPlayer();
+    this.player = new Player(username, this.dealer);
+    this.computerPlayer = new ComputerPlayer(null, this.dealer);
     this.allPlayers = [this.computerPlayer, this.player];
     this.outcome = '';
   }
 
   dealInitialHand() {
+    this.dealer.shuffle();
     this.player.hit();
     this.computerPlayer.hit();
     this.player.hit();
     this.computerPlayer.hit();
-    this.findWinner();
+    this.findWinner(true);
   }
 
   playAgain() {
@@ -34,17 +35,30 @@ export default class Game {
     this.findWinner();
   }
 
-  findWinner() {
+  findWinner(isFirstHand = false) {
     let playerHand = this.player.getCardTotal();
     let dealerHand = this.computerPlayer.getCardTotal();
-    if (playerHand == dealerHand) {
-      this.outcome = 'Tied';
-    } else if (playerHand > dealerHand && playerHand <= 21) {
-      this.outcome = 'Win';
-    } else if (playerHand < dealerHand && dealerHand <= 21) {
-      this.outcome = 'Lose';
+    if (isFirstHand) {
+      if (playerHand === 21 || dealerHand === 21) {
+        if (playerHand === 21) {
+          this.outcome = 'Win';
+        } else {
+          this.outcome = 'Lose';
+        }
+        this.calculatePayout();
+      } else {
+        return;
+      }
+    } else {
+      if (playerHand == dealerHand) {
+        this.outcome = 'Tied';
+      } else if (playerHand > dealerHand && playerHand <= 21) {
+        this.outcome = 'Win';
+      } else if (playerHand < dealerHand && dealerHand <= 21) {
+        this.outcome = 'Lose';
+      }
+      this.calculatePayout();
     }
-    this.calculatePayout();
   }
 
   calculatePayout() {

@@ -1,24 +1,26 @@
-import React, { useState } from 'react';
-import Game from '../classes/Game';
+import React, { useState } from "react";
+import Game from "../classes/Game";
+import { Button } from "./Button";
+import Card from "./Card";
 
 export const GameTable = () => {
-  let game;
-  let dealer;
-  const [player, setPlayer] = useState({});
-  const [computerPlayer, setComputerPlayer] = useState({});
+  const [game, setGame] = useState(null);
+  const [player, setPlayer] = useState(null);
+  const [computerPlayer, setComputerPlayer] = useState(null);
 
   function handleStartGame() {
-    game = new Game();
-    const { _dealer, _player, _computerPlayer } = game;
-    dealer = _dealer;
-    setPlayer(_player);
-    setComputerPlayer(_computerPlayer);
+    const _game = new Game();
+    setGame(_game);
+    setPlayer(_game.player);
+    setComputerPlayer(_game.computerPlayer);
   }
 
   function handleDeal(num) {
     // player clicks on deal button after they've placed their bets (like in 247 blackjack)
-    const err = player.placeBet(num);
+    game.player.placeBet(num);
     game.dealInitialHand();
+    setPlayer({ ...player, currentCards: player.currentCards });
+    setComputerPlayer({ ...computerPlayer, currentCards: computerPlayer.currentCards });
   }
 
   function handlePlayAgain() {
@@ -33,5 +35,10 @@ export const GameTable = () => {
     player.stay();
   }
 
-  return();
-}
+  return (
+    <div>
+      <Button label="Start Game" clickHandler={handleStartGame} />
+      <Button label="Deal" clickHandler={() => handleDeal(500)} />
+    </div>
+  );
+};
