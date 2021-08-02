@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { authenticate } from "../store";
-
 /**
  * COMPONENT
  */
@@ -62,29 +61,7 @@ const mapDispatch = (dispatch) => {
       const formName = evt.target.name;
       const username = evt.target.username.value;
       const password = evt.target.password.value;
-
-      //grab player info from local storage for new user:
-      let {
-        currentWins,
-        currentLosses,
-        currentDraws,
-        currentTotalMoney,
-      } = window.localStorage.getItem("currentPlayer");
-      const wins = currentWins;
-      const losses = currentLosses;
-      const draws = currentDraws;
-      const totalMoney = currentTotalMoney;
-      dispatch(
-        authenticate(
-          username,
-          password,
-          wins,
-          losses,
-          draws,
-          totalMoney,
-          formName
-        )
-      );
+      dispatch(authenticate(username, password, formName));
     },
   };
 };

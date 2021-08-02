@@ -33,17 +33,6 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
-  try {
-    const user = await User.findByPk(req.params.id, {
-      attributes: { exclude: ["password"] },
-    });
-    res.json(user);
-  } catch (err) {
-    next(err);
-  }
-});
-
 router.put("/:id/addWin", async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.id);

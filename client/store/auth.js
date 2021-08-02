@@ -28,23 +28,13 @@ export const me = () => async (dispatch) => {
   }
 };
 
-export const authenticate = (
-  username,
-  password,
-  wins,
-  losses,
-  draws,
-  totalMoney,
-  method
-) => async (dispatch) => {
+export const authenticate = (username, password, method) => async (
+  dispatch
+) => {
   try {
     const res = await axios.post(`/auth/${method}`, {
       username,
       password,
-      wins,
-      losses,
-      draws,
-      totalMoney,
     });
     window.localStorage.setItem(TOKEN, res.data.token);
     dispatch(me());
@@ -55,6 +45,9 @@ export const authenticate = (
 
 export const logout = () => {
   window.localStorage.removeItem(TOKEN);
+
+  //removes logged in player info from local storage so upon logout, guest player should start from scratch
+  window.localStorage.removeItem("currentPlayer");
   history.push("/login");
   return {
     type: SET_AUTH,
