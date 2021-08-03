@@ -4,6 +4,7 @@ import { Button } from "./Button";
 import { BetInput } from "./BetInput";
 import PlayGameModal from "./PlayGameModal";
 import { Card } from "./Card";
+import { Counters } from "./Counters";
 
 export const GameTable = () => {
   const [game, setGame] = useState(null);
@@ -113,6 +114,7 @@ export const GameTable = () => {
       ) : null} */}
       {game ? (
         <div>
+          <Counters player={player} />
           <BetInput
             player={player}
             setPlayer={setPlayer}
@@ -127,9 +129,11 @@ export const GameTable = () => {
           )}
           {toggleShowCards && (
             <div>
+              <div>Your cards:</div>
               {player.currentCards.map((card, index) => (
                 <Card key={index} card={card} isVisible={true} />
               ))}
+              <div>{"Dealer's cards:"}</div>
               {computerPlayer.currentCards.map((card, index) => (
                 <Card key={index} card={card} isVisible={index === 0} />
               ))}
