@@ -9,8 +9,7 @@ const card = {
 isVisible = true
 */
 
-export const Card = (card, isVisible) => {
-  console.log("card in Card >>>>", card);
+export const Card = ({ card, isVisible }) => {
   const { suit, value } = card;
   return (
     <div className="card-container">
