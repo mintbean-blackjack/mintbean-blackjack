@@ -2,20 +2,34 @@ import Dealer from "./Dealer";
 import Player from "./Player";
 import ComputerPlayer from "./ComputerPlayer";
 
-const { username, totalMoney, wins, losses, draws } = JSON.parse(window.localStorage.getItem("currentPlayer"));
+let currentPlayer = JSON.parse(window.localStorage.getItem("currentPlayer"));
 
 export default class Game {
   constructor() {
     this.dealer = new Dealer();
-    this.player = new Player(username, totalMoney, wins, losses, draws, this.dealer);
-    this.computerPlayer = new ComputerPlayer(null, Infinity, null, null, null, this.dealer);
+    this.player = new Player(
+      currentPlayer.username,
+      currentPlayer.totalMoney,
+      currentPlayer.wins,
+      currentPlayer.losses,
+      currentPlayer.draws,
+      this.dealer
+    );
+    this.computerPlayer = new ComputerPlayer(
+      null,
+      Infinity,
+      null,
+      null,
+      null,
+      this.dealer
+    );
     this.allPlayers = [this.computerPlayer, this.player];
     this.outcome = "";
   }
 
   dealInitialHand() {
-    console.log('computerPlayer in dealInitialHand >>>', this.computerPlayer)
-    console.log('player in dealInitialHand >>>>', this.player)
+    console.log("computerPlayer in dealInitialHand >>>", this.computerPlayer);
+    console.log("player in dealInitialHand >>>>", this.player);
     this.dealer.shuffle();
     this.player.hit();
     this.computerPlayer.hit();
@@ -42,7 +56,6 @@ export default class Game {
       this.calculatePayout();
     } else {
       return;
-
     }
   }
 
@@ -80,7 +93,7 @@ export default class Game {
     }
     this.calculatePayout();
   }
-  
+
   calculatePayout() {
     let payout;
     if (this.outcome === "Win") {
@@ -92,7 +105,7 @@ export default class Game {
     }
     this.displayWinner(payout);
   }
-  
+
   displayWinner(payout) {
     this.player.updateTotalMoney(payout);
     if (this.outcome === "Win") {

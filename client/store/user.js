@@ -75,6 +75,17 @@ export const updateMoney = (id, payout) => {
   };
 };
 
+export const resetStats = (id) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.put(`/api/users/${id}/resetStats`);
+      dispatch(setUser(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 //reducer
 export default function userReducer(user = {}, action) {
   switch (action.type) {

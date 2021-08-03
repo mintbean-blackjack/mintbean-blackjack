@@ -25,7 +25,11 @@ export const me = () => async (dispatch) => {
       },
     });
     //store signed in user as currentPlayer
-    window.localStorage.setItem("currentPlayer", JSON.stringify(res.data));
+    const { id, username, wins, losses, draws, totalMoney } = res.data;
+    window.localStorage.setItem(
+      "currentPlayer",
+      JSON.stringify({ id, username, wins, losses, draws, totalMoney })
+    );
     return dispatch(setAuth(res.data));
   }
 };

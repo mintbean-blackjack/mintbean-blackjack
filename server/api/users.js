@@ -71,7 +71,6 @@ router.put("/:id/updateMoney", async (req, res, next) => {
     const user = await User.findByPk(req.params.id);
     //using instance methods defined in User model
     const { payout } = req.body;
-    console.log("payout datatype: ", typeof payout);
     await user.updateMoney(payout);
     res.sendStatus(202);
   } catch (error) {

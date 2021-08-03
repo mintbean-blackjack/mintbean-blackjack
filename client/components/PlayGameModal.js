@@ -1,11 +1,18 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import { Button, Modal } from "semantic-ui-react";
+import { fetchUser, resetStats } from "../store/user";
 import "../styles.css";
 
-const PlayGameModal = ({ playGameClickHandler, startGameFunc }) => {
-  const [open, setOpen] = useState(true);
-  const [game, setGame] = useState(null);
+const currentPlayer = JSON.parse(window.localStorage.getItem("currentPlayer"));
 
+const PlayGameModal = ({
+  playGameClickHandler,
+  startGameFunc,
+  loadUser,
+  resetUser,
+}) => {
+  const [open, setOpen] = useState(true);
   return (
     <Modal
       className="play-game-modal"
@@ -19,8 +26,54 @@ const PlayGameModal = ({ playGameClickHandler, startGameFunc }) => {
             console.log(
               "wipe out local storage || reset game data on logged in user"
             );
-
-            // startGameFunc(game);
+            console.log(
+              "currentPlayer in new game button",
+              window.localStorage.getItem("currentPlayer")
+            );
+            console.log("currentPlayer id", currentPlayer["id"]);
+            if (currentPlayer["id"]) {
+              //if logged in user, reset player's info
+              const asyncReset = async () => {
+                try {
+                  await resetUser(currentPlayer["id"]);
+                } catch (error) {
+                  console.log(error);
+                }
+              };
+              asyncReset();
+              const asyncLoad = async () => {
+                try {
+                  const userInfo = await loadUser(currentPlayer["id"]);
+                  window.localStorage.setItem(
+                    "currentPlayer",
+                    JSON.stringify(userInfo)
+                  );
+                } catch (error) {
+                  console.log(error);
+                }
+              };
+              asyncLoad();
+              console.log(
+                "local storage for logged in user's new game button",
+                window.localStorage.getItem("currentPlayer")
+              );
+            } else {
+              //otherwise reset guest player
+              console.log(
+                "no currentPlayer.id found (meaning this is a guest player"
+              );
+              window.localStorage.setItem(
+                "currentPlayer",
+                JSON.stringify({
+                  username: "Guest",
+                  totalMoney: 2500,
+                  wins: 0,
+                  losses: 0,
+                  draws: 0,
+                })
+              );
+            }
+            startGameFunc();
             setOpen(false);
             playGameClickHandler();
           }}
@@ -30,7 +83,7 @@ const PlayGameModal = ({ playGameClickHandler, startGameFunc }) => {
         <Button
           onClick={() => {
             console.log("continue with play game");
-            // startGameFunc(game);
+            startGameFunc();
             setOpen(false);
             playGameClickHandler();
           }}
@@ -52,4 +105,15 @@ const PlayGameModal = ({ playGameClickHandler, startGameFunc }) => {
   );
 };
 
-export default PlayGameModal;
+const mapState = (state) => {
+  return {
+    isLoggedIn: !!state.auth.id,
+  };
+};
+
+const mapDispatch = (dispatch) => ({
+  resetUser: (id) => dispatch(resetStats(id)),
+  loadUser: (id) => dispatch(fetchUser(id)),
+});
+
+export default connect(mapState, mapDispatch)(PlayGameModal);
