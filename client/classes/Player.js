@@ -19,9 +19,7 @@ export default class Player {
 
   // player takes a card
   hit() {
-    console.log('this.dealer in hit =', this.dealer)
     const card = this.dealer.deal();
-    console.log('card in hit >>>', card)
     this.updateCurrentCards(card);
   }
 
@@ -72,6 +70,13 @@ export default class Player {
     } else {
       return "You do not have enough money. Choose a smaller amount.";
     }
+  }
+
+  updateOutcome(outcome) {
+    console.log('outcome in updateOutcome =', outcome)
+    console.log(`this[${outcome}] before incrementing =`, this[outcome])
+    this[outcome]++;
+    console.log(`this[${outcome}] after incrementing =`, this[outcome])
   }
 
   updateTotalMoney(payout) {
