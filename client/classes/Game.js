@@ -2,13 +2,44 @@ import Dealer from "./Dealer";
 import Player from "./Player";
 import ComputerPlayer from "./ComputerPlayer";
 
-const { username, totalMoney, wins, losses, draws } = JSON.parse(window.localStorage.getItem("currentPlayer"));
+let currentPlayer;
+
+if (!window.localStorage.getItem("currentPlayer")) {
+  currentPlayer = window.localStorage.setItem(
+    "currentPlayer",
+    JSON.stringify({
+      username: "Guest",
+      totalMoney: 2500,
+      wins: 0,
+      losses: 0,
+      draws: 0,
+    })
+  );
+} else {
+  currentPlayer = JSON.parse(window.localStorage.getItem("currentPlayer"));
+}
+
+console.log("current player obj before game is made", currentPlayer);
 
 export default class Game {
   constructor() {
     this.dealer = new Dealer();
-    this.player = new Player(username, totalMoney, wins, losses, draws, this.dealer);
-    this.computerPlayer = new ComputerPlayer(null, Infinity, null, null, null, this.dealer);
+    this.player = new Player(
+      currentPlayer.username,
+      currentPlayer.totalMoney,
+      currentPlayer.wins,
+      currentPlayer.losses,
+      currentPlayer.draws,
+      this.dealer
+    );
+    this.computerPlayer = new ComputerPlayer(
+      null,
+      Infinity,
+      null,
+      null,
+      null,
+      this.dealer
+    );
     this.allPlayers = [this.computerPlayer, this.player];
     this.outcome = "";
   }
@@ -26,10 +57,7 @@ export default class Game {
   }
 
   checkForNatural() {
-    // if either player is dealt a 21, they're automatically the winner
-    // const [playerHand, dealerHand] = this.getCardTotals();
-    const playerHand = 15;
-    const dealerHand = 21;
+    const [playerHand, dealerHand] = this.getCardTotals();
     if (playerHand === 21 || dealerHand === 21) {
       if (playerHand === 21) {
         this.outcome = "wins";
@@ -48,7 +76,7 @@ export default class Game {
   checkForBlackJack() {
     // after the player receives a card, if their total is 21 then they should stand (they haven't necessarily won, though)
     if (this.player.getCardTotal() === 21) {
-      this.player.stand();
+      this.player.stay();
     }
   }
 
@@ -62,8 +90,9 @@ export default class Game {
         this.outcome = "wins";
       }
       this.calculatePayout();
+      return this.outcome;
     } else {
-      return;
+      return null;
     }
   }
 
@@ -72,14 +101,15 @@ export default class Game {
     const [playerHand, dealerHand] = this.getCardTotals();
     if (playerHand === dealerHand) {
       this.outcome = "draws";
-    } else if (playerHand > dealerHand && playerHand <= 21) {
+    } else if (playerHand > dealerHand) {
       this.outcome = "wins";
-    } else if (playerHand < dealerHand && dealerHand <= 21) {
+    } else if (playerHand < dealerHand) {
       this.outcome = "losses";
     }
     this.calculatePayout();
+    return this.outcome;
   }
-  
+
   calculatePayout() {
     let payout;
     if (this.outcome === "wins") {
@@ -91,7 +121,7 @@ export default class Game {
     }
     this.displayWinner(payout);
   }
-  
+
   displayWinner(payout) {
     this.player.updateTotalMoney(payout);
     this.player.updateOutcome(this.outcome);

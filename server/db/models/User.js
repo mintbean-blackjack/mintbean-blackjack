@@ -117,7 +117,7 @@ User.prototype.addDraw = async function () {
 };
 
 User.prototype.getMoney = function () {
-  return this.money;
+  return this.totalMoney;
 };
 
 User.prototype.updateMoney = async function (payout) {
