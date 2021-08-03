@@ -7,6 +7,7 @@ import '../styles.css';
 const currentPlayer = JSON.parse(window.localStorage.getItem('currentPlayer'));
 
 const PlayGameModal = ({
+  handlePlayAgain,
   playGameClickHandler,
   startGameFunc,
   loadUser,
@@ -84,7 +85,7 @@ const PlayGameModal = ({
         <Button
           onClick={() => {
             console.log('continue with play game');
-            startGameFunc();
+            handlePlayAgain();
             setOpen(false);
             playGameClickHandler();
           }}
