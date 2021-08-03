@@ -45,14 +45,11 @@ export default class Game {
   }
 
   dealInitialHand() {
-    console.log("computerPlayer in dealInitialHand >>>", this.computerPlayer);
-    console.log("player in dealInitialHand >>>>", this.player);
     this.dealer.shuffle();
     this.player.hit();
     this.computerPlayer.hit();
     this.player.hit();
     this.computerPlayer.hit();
-    this.checkForNatural();
   }
 
   getCardTotals() {
@@ -60,26 +57,26 @@ export default class Game {
   }
 
   checkForNatural() {
-    // if either player is dealt a 21, they're automatically the winner
     const [playerHand, dealerHand] = this.getCardTotals();
     if (playerHand === 21 || dealerHand === 21) {
       if (playerHand === 21) {
-        this.outcome = "Win";
+        this.outcome = "wins";
       } else if (dealerHand === 21) {
-        this.outcome = "Lose";
+        this.outcome = "losses";
       } else {
-        this.outcome = "Tied";
+        this.outcome = "draws";
       }
       this.calculatePayout();
+      return this.outcome;
     } else {
-      return;
+      return null;
     }
   }
 
   checkForBlackJack() {
     // after the player receives a card, if their total is 21 then they should stand (they haven't necessarily won, though)
     if (this.player.getCardTotal() === 21) {
-      this.player.stand();
+      this.player.stay();
     }
   }
 
@@ -88,13 +85,14 @@ export default class Game {
     const [playerHand, dealerHand] = this.getCardTotals();
     if (playerHand > 21 || dealerHand > 21) {
       if (playerHand > 21) {
-        this.outcome = "Lose";
+        this.outcome = "losses";
       } else {
-        this.outcome = "Win";
+        this.outcome = "wins";
       }
       this.calculatePayout();
+      return this.outcome;
     } else {
-      return;
+      return null;
     }
   }
 
@@ -102,20 +100,21 @@ export default class Game {
     // gets called when they player clicks on the "stand" button
     const [playerHand, dealerHand] = this.getCardTotals();
     if (playerHand === dealerHand) {
-      this.outcome = "Tied";
-    } else if (playerHand > dealerHand && playerHand <= 21) {
-      this.outcome = "Win";
-    } else if (playerHand < dealerHand && dealerHand <= 21) {
-      this.outcome = "Lose";
+      this.outcome = "draws";
+    } else if (playerHand > dealerHand) {
+      this.outcome = "wins";
+    } else if (playerHand < dealerHand) {
+      this.outcome = "losses";
     }
     this.calculatePayout();
+    return this.outcome;
   }
 
   calculatePayout() {
     let payout;
-    if (this.outcome === "Win") {
+    if (this.outcome === "wins") {
       payout = this.player.currentBetAmount * 1.5;
-    } else if (this.outcome === "Lose") {
+    } else if (this.outcome === "losses") {
       payout = -this.player.currentBetAmount;
     } else {
       payout = 0;
@@ -125,18 +124,15 @@ export default class Game {
 
   displayWinner(payout) {
     this.player.updateTotalMoney(payout);
-    if (this.outcome === "Win") {
+    this.player.updateOutcome(this.outcome);
+    updateLocalStorage(this.outcome, payout);
+    if (this.outcome === "wins") {
       //add logic to check if user is logged in; use thunk actions to update win and payout in db
       //also retreive from local storage, update, convert back to string, store again
-      updateLocalStorage("wins", payout);
-      return `Congratulations! You ${this.outcome} $${payout}!`;
-    } else if (this.outcome === "Lose") {
-      updateLocalStorage("losses", payout);
-      return `Congratulations! You ${this.outcome} $${payout}!`;
-    } else if (this.outcome === "Lose") {
-      return `Sorry! You ${this.outcome} $${-payout} :(`;
+      return `Congratulations! You Win $${payout}!`;
+    } else if (this.outcome === "losses") {
+      return `Sorry! You Lose $${-payout} :(`;
     } else {
-      updateLocalStorage("draws", 0);
       return `You tied! You get back all your money.`;
     }
   }
