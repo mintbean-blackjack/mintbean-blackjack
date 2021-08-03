@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Game from "../classes/Game";
 import { Button } from "./Button";
 import { BetInput } from "./BetInput";
-import PlayGameModal from "./PlayGameModal";
 import { Card } from "./Card";
 import { Counters } from "./Counters";
 
@@ -11,16 +10,9 @@ export const GameTable = () => {
   const [player, setPlayer] = useState(null);
   const [computerPlayer, setComputerPlayer] = useState(null);
 
-  const [showPlayGameModal, setShowPlayGameModal] = useState(() => false);
   const [toggleDeal, setToggleDeal] = useState(false);
   const [toggleHitAndStay, setToggleHitAndStay] = useState(false);
   const [toggleShowCards, setToggleShowCards] = useState(false);
-
-  const playGameClickHandler = () => {
-    //before creating game, check if local storage player exists (logged in user is stored upon log in and removed upon log out);
-    //if local storage player does not exist, add guest player to local storage
-    setShowPlayGameModal(!showPlayGameModal);
-  };
 
   function handleStartGame() {
     //before creating game, check if local storage player exists (logged in user is stored upon log in and removed upon log out);
@@ -104,14 +96,6 @@ export const GameTable = () => {
   return (
     <div>
       <Button label="Start Game" clickHandler={handleStartGame} />
-      {/* <Button label="Start Game" clickHandler={playGameClickHandler} /> */}
-      {/* {showPlayGameModal ? (
-        <PlayGameModal
-          handlePlayAgain={handlePlayAgain}
-          playGameClickHandler={playGameClickHandler}
-          startGameFunc={handleStartGame}
-        />
-      ) : null} */}
       {game ? (
         <div>
           <Counters player={player} />
