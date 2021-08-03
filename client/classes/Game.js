@@ -2,13 +2,44 @@ import Dealer from "./Dealer";
 import Player from "./Player";
 import ComputerPlayer from "./ComputerPlayer";
 
-const { username, totalMoney, wins, losses, draws } = JSON.parse(window.localStorage.getItem("currentPlayer"));
+let currentPlayer;
+
+if (!window.localStorage.getItem("currentPlayer")) {
+  currentPlayer = window.localStorage.setItem(
+    "currentPlayer",
+    JSON.stringify({
+      username: "Guest",
+      totalMoney: 2500,
+      wins: 0,
+      losses: 0,
+      draws: 0,
+    })
+  );
+} else {
+  currentPlayer = JSON.parse(window.localStorage.getItem("currentPlayer"));
+}
+
+console.log("current player obj before game is made", currentPlayer);
 
 export default class Game {
   constructor() {
     this.dealer = new Dealer();
-    this.player = new Player(username, totalMoney, wins, losses, draws, this.dealer);
-    this.computerPlayer = new ComputerPlayer(null, Infinity, null, null, null, this.dealer);
+    this.player = new Player(
+      currentPlayer.username,
+      currentPlayer.totalMoney,
+      currentPlayer.wins,
+      currentPlayer.losses,
+      currentPlayer.draws,
+      this.dealer
+    );
+    this.computerPlayer = new ComputerPlayer(
+      null,
+      Infinity,
+      null,
+      null,
+      null,
+      this.dealer
+    );
     this.allPlayers = [this.computerPlayer, this.player];
     this.outcome = "";
   }
@@ -78,7 +109,7 @@ export default class Game {
     this.calculatePayout();
     return this.outcome;
   }
-  
+
   calculatePayout() {
     let payout;
     if (this.outcome === "wins") {
@@ -90,7 +121,7 @@ export default class Game {
     }
     this.displayWinner(payout);
   }
-  
+
   displayWinner(payout) {
     this.player.updateTotalMoney(payout);
     this.player.updateOutcome(this.outcome);

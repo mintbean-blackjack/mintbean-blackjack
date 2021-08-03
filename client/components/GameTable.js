@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Game from "../classes/Game";
-import { fetchUser } from "../store/user";
 import { Button } from "./Button";
 import { BetInput } from "./BetInput";
+import PlayGameModal from "./PlayGameModal";
 import { ShowCards } from "./ShowCards";
 import { Card } from "./Card";
 
@@ -10,7 +10,15 @@ export const GameTable = () => {
   const [game, setGame] = useState(null);
   const [player, setPlayer] = useState(null);
   const [computerPlayer, setComputerPlayer] = useState(null);
+  const [showPlayGameModal, setShowPlayGameModal] = useState(() => false);
 
+  const playGameClickHandler = () => {
+    //before creating game, check if local storage player exists (logged in user is stored upon log in and removed upon log out);
+    //if local storage player does not exist, add guest player to local storage
+    setShowPlayGameModal(!showPlayGameModal);
+  };
+
+  function handleStartGame() {
   const [toggleDeal, setToggleDeal] = useState(false);
   const [toggleHitAndStay, setToggleHitAndStay] = useState(false);
   const [toggleShowCards, setToggleShowCards] = useState(false);
@@ -41,6 +49,7 @@ export const GameTable = () => {
     // player clicks on deal button after they've placed their bets (like in 247 blackjack)
     game.player.placeBet(player.currentBetAmount);
     game.dealInitialHand();
+    setPlayer({ ...player, currentCards: player.currentCards });
     const outcome = game.checkForNatural();
     updatePlayer(outcome);
     setComputerPlayer({
@@ -59,6 +68,13 @@ export const GameTable = () => {
     const outcome = game.checkForBust();
     updatePlayer(outcome);
     game.checkForBlackJack();
+    setPlayer({
+      ...player,
+      currentCards: player.currentCards,
+      totalMoney: game.player.totalMoney,
+    });
+  }
+
   }
 
   function updatePlayer(outcome) {
@@ -91,7 +107,13 @@ export const GameTable = () => {
 
   return (
     <div>
-      <Button label="Start Game" clickHandler={handleStartGame} />
+      <Button label="Start Game" clickHandler={playGameClickHandler} />
+      {showPlayGameModal ? (
+        <PlayGameModal
+          playGameClickHandler={playGameClickHandler}
+          startGameFunc={handleStartGame}
+        />
+      ) : null}
       {game ? (
         <div>
           <BetInput
