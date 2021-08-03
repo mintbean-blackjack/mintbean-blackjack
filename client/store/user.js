@@ -18,12 +18,12 @@ export const fetchUser = (id) => {
   return async (dispatch) => {
     try {
       const token = window.localStorage.getItem(TOKEN);
-      console.log("token from fetchUser thunk>>>>", token);
       const { data } = await axios.get(`/api/users/${id}`, {
         headers: {
           authoritization: token,
         },
       });
+      console.log("data/user in fetchUser thunk>>>>>", data);
       dispatch(setUser(data));
     } catch (error) {
       console.error(error);

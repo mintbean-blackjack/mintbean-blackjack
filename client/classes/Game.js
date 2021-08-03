@@ -2,7 +2,24 @@ import Dealer from "./Dealer";
 import Player from "./Player";
 import ComputerPlayer from "./ComputerPlayer";
 
-let currentPlayer = JSON.parse(window.localStorage.getItem("currentPlayer"));
+let currentPlayer;
+
+if (!window.localStorage.getItem("currentPlayer")) {
+  currentPlayer = window.localStorage.setItem(
+    "currentPlayer",
+    JSON.stringify({
+      username: "Guest",
+      totalMoney: 2500,
+      wins: 0,
+      losses: 0,
+      draws: 0,
+    })
+  );
+} else {
+  currentPlayer = JSON.parse(window.localStorage.getItem("currentPlayer"));
+}
+
+console.log("current player obj before game is made", currentPlayer);
 
 export default class Game {
   constructor() {

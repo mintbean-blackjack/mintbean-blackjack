@@ -14,19 +14,6 @@ export const GameTable = () => {
   const playGameClickHandler = () => {
     //before creating game, check if local storage player exists (logged in user is stored upon log in and removed upon log out);
     //if local storage player does not exist, add guest player to local storage
-    if (!window.localStorage.getItem("currentPlayer")) {
-      console.log("inside no local storage>>>>");
-      window.localStorage.setItem(
-        "currentPlayer",
-        JSON.stringify({
-          username: "Guest",
-          totalMoney: 2500,
-          wins: 0,
-          losses: 0,
-          draws: 0,
-        })
-      );
-    }
     setShowPlayGameModal(!showPlayGameModal);
   };
 

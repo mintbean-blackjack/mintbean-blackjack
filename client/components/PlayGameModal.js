@@ -11,8 +11,11 @@ const PlayGameModal = ({
   startGameFunc,
   loadUser,
   resetUser,
+  user,
 }) => {
   const [open, setOpen] = useState(true);
+  console.log("user on play game modal", user);
+
   return (
     <Modal
       className="play-game-modal"
@@ -23,13 +26,6 @@ const PlayGameModal = ({
       <Modal.Content>
         <Button
           onClick={() => {
-            console.log(
-              "wipe out local storage || reset game data on logged in user"
-            );
-            console.log(
-              "currentPlayer in new game button",
-              window.localStorage.getItem("currentPlayer")
-            );
             console.log("currentPlayer id", currentPlayer["id"]);
             if (currentPlayer["id"]) {
               //if logged in user, reset player's info
@@ -43,7 +39,12 @@ const PlayGameModal = ({
               asyncReset();
               const asyncLoad = async () => {
                 try {
+                  console.log("currentPlayer id", currentPlayer["id"]);
                   const userInfo = await loadUser(currentPlayer["id"]);
+                  console.log(
+                    "userinfo in async reset function >>>>>>>>>>>>",
+                    userInfo
+                  );
                   window.localStorage.setItem(
                     "currentPlayer",
                     JSON.stringify(userInfo)
@@ -55,12 +56,12 @@ const PlayGameModal = ({
               asyncLoad();
               console.log(
                 "local storage for logged in user's new game button",
-                window.localStorage.getItem("currentPlayer")
+                JSON.parse(window.localStorage.getItem("currentPlayer"))
               );
             } else {
               //otherwise reset guest player
               console.log(
-                "no currentPlayer.id found (meaning this is a guest player"
+                "no currentPlayer['id'] found (meaning this is a guest player"
               );
               window.localStorage.setItem(
                 "currentPlayer",
@@ -108,6 +109,7 @@ const PlayGameModal = ({
 const mapState = (state) => {
   return {
     isLoggedIn: !!state.auth.id,
+    user: state.user,
   };
 };
 

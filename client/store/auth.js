@@ -28,7 +28,14 @@ export const me = () => async (dispatch) => {
     const { id, username, wins, losses, draws, totalMoney } = res.data;
     window.localStorage.setItem(
       "currentPlayer",
-      JSON.stringify({ id, username, wins, losses, draws, totalMoney })
+      JSON.stringify({
+        id: id,
+        username: username,
+        wins: wins,
+        losses: losses,
+        draws: draws,
+        totalMoney: totalMoney,
+      })
     );
     return dispatch(setAuth(res.data));
   }
