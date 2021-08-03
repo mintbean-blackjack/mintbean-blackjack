@@ -1,9 +1,14 @@
-import React from 'react';
+import React from "react";
 
-export const CounterDisplay = ({ label }) => (
-  <div className={`${label}-counter-container`}>
-    <div className={`${label}-counter`}>
-      <p>{label}</p>
+export const CounterDisplay = ({ label, value }) => {
+  function getClassName() {
+    return label.toLowerCase().split(" ").join("-");
+  }
+  return (
+    <div className={`${getClassName()}-counter-container`}>
+      <div className={`${getClassName()}-counter`}>
+        <p>{`${label}: ${value}`}</p>
+      </div>
     </div>
-  </div>
-);
+  );
+};

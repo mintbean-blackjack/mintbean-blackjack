@@ -1,22 +1,14 @@
-import React, { useState } from 'react';
-import Game from '../classes/Game';
-import { Button } from './Button';
-import { BetInput } from './BetInput';
-import PlayGameModal from './PlayGameModal';
-import { ShowCards } from './ShowCards';
-import { Card } from './Card';
+import React, { useState } from "react";
+import Game from "../classes/Game";
+import { Button } from "./Button";
+import { BetInput } from "./BetInput";
+import { Card } from "./Card";
+import { Counters } from "./Counters";
 
 export const GameTable = () => {
   const [game, setGame] = useState(null);
   const [player, setPlayer] = useState(null);
   const [computerPlayer, setComputerPlayer] = useState(null);
-  const [showPlayGameModal, setShowPlayGameModal] = useState(() => false);
-
-  const playGameClickHandler = () => {
-    //before creating game, check if local storage player exists (logged in user is stored upon log in and removed upon log out);
-    //if local storage player does not exist, add guest player to local storage
-    setShowPlayGameModal(!showPlayGameModal);
-  };
 
   const [toggleDeal, setToggleDeal] = useState(false);
   const [toggleHitAndStay, setToggleHitAndStay] = useState(false);
@@ -25,11 +17,11 @@ export const GameTable = () => {
   function handleStartGame() {
     //before creating game, check if local storage player exists (logged in user is stored upon log in and removed upon log out);
     //if local storage player does not exist, add guest player to local storage
-    if (!window.localStorage.getItem('currentPlayer')) {
+    if (!window.localStorage.getItem("currentPlayer")) {
       window.localStorage.setItem(
-        'currentPlayer',
+        "currentPlayer",
         JSON.stringify({
-          username: 'Guest',
+          username: "Guest",
           totalMoney: 2500,
           wins: 0,
           losses: 0,
@@ -48,7 +40,6 @@ export const GameTable = () => {
     // player clicks on deal button after they've placed their bets (like in 247 blackjack)
     game.player.placeBet(player.currentBetAmount);
     game.dealInitialHand();
-    setPlayer({ ...player, currentCards: player.currentCards });
     const outcome = game.checkForNatural();
     updatePlayer(outcome);
     setComputerPlayer({
@@ -105,16 +96,9 @@ export const GameTable = () => {
   return (
     <div>
       <Button label="Start Game" clickHandler={handleStartGame} />
-      {/* <Button label="Start Game" clickHandler={playGameClickHandler} /> */}
-      {/* {showPlayGameModal ? (
-        <PlayGameModal
-          handlePlayAgain={handlePlayAgain}
-          playGameClickHandler={playGameClickHandler}
-          startGameFunc={handleStartGame}
-        />
-      ) : null} */}
       {game ? (
         <div>
+          <Counters player={player} />
           <BetInput
             player={player}
             setPlayer={setPlayer}
@@ -129,14 +113,11 @@ export const GameTable = () => {
           )}
           {toggleShowCards && (
             <div>
-              {/* <ShowCards label="Player" cards={player.currentCards} />
-              <ShowCards
-                label="Computer Player"
-                cards={computerPlayer.currentCards}
-              /> */}
+              <div>Your cards:</div>
               {player.currentCards.map((card, index) => (
                 <Card key={index} card={card} isVisible={true} />
               ))}
+              <div>{"Dealer's cards:"}</div>
               {computerPlayer.currentCards.map((card, index) => (
                 <Card key={index} card={card} isVisible={index === 0} />
               ))}
