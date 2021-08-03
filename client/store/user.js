@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 
-const TOKEN = "token";
+const TOKEN = 'token';
 
 //action types
-const SET_USER = "SET_USER";
+const SET_USER = 'SET_USER';
 
 //action creators
 export const setUser = (user) => {
@@ -20,10 +20,10 @@ export const fetchUser = (id) => {
       const token = window.localStorage.getItem(TOKEN);
       const { data } = await axios.get(`/api/users/${id}`, {
         headers: {
-          authoritization: token,
+          authorization: token,
         },
       });
-      console.log("data/user in fetchUser thunk>>>>>", data);
+      console.log('data/user in fetchUser thunk>>>>>', data);
       dispatch(setUser(data));
     } catch (error) {
       console.error(error);

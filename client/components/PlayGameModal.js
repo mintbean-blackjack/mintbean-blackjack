@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { Button, Modal } from "semantic-ui-react";
-import { fetchUser, resetStats } from "../store/user";
-import "../styles.css";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { Button, Modal } from 'semantic-ui-react';
+import { fetchUser, resetStats } from '../store/user';
+import '../styles.css';
 
-const currentPlayer = JSON.parse(window.localStorage.getItem("currentPlayer"));
+const currentPlayer = JSON.parse(window.localStorage.getItem('currentPlayer'));
 
 const PlayGameModal = ({
   playGameClickHandler,
@@ -14,7 +14,7 @@ const PlayGameModal = ({
   user,
 }) => {
   const [open, setOpen] = useState(true);
-  console.log("user on play game modal", user);
+  console.log('user on play game modal', user);
 
   return (
     <Modal
@@ -26,12 +26,12 @@ const PlayGameModal = ({
       <Modal.Content>
         <Button
           onClick={() => {
-            console.log("currentPlayer id", currentPlayer["id"]);
-            if (currentPlayer["id"]) {
+            // console.log('currentPlayer id', currentPlayer['id']);
+            if (currentPlayer['id']) {
               //if logged in user, reset player's info
               const asyncReset = async () => {
                 try {
-                  await resetUser(currentPlayer["id"]);
+                  await resetUser(currentPlayer['id']);
                 } catch (error) {
                   console.log(error);
                 }
@@ -39,14 +39,14 @@ const PlayGameModal = ({
               asyncReset();
               const asyncLoad = async () => {
                 try {
-                  console.log("currentPlayer id", currentPlayer["id"]);
-                  const userInfo = await loadUser(currentPlayer["id"]);
+                  console.log('currentPlayer id', currentPlayer['id']);
+                  const userInfo = await loadUser(currentPlayer['id']);
                   console.log(
-                    "userinfo in async reset function >>>>>>>>>>>>",
+                    'userinfo in async reset function >>>>>>>>>>>>',
                     userInfo
                   );
                   window.localStorage.setItem(
-                    "currentPlayer",
+                    'currentPlayer',
                     JSON.stringify(userInfo)
                   );
                 } catch (error) {
@@ -56,7 +56,7 @@ const PlayGameModal = ({
               asyncLoad();
               console.log(
                 "local storage for logged in user's new game button",
-                JSON.parse(window.localStorage.getItem("currentPlayer"))
+                JSON.parse(window.localStorage.getItem('currentPlayer'))
               );
             } else {
               //otherwise reset guest player
@@ -64,9 +64,9 @@ const PlayGameModal = ({
                 "no currentPlayer['id'] found (meaning this is a guest player"
               );
               window.localStorage.setItem(
-                "currentPlayer",
+                'currentPlayer',
                 JSON.stringify({
-                  username: "Guest",
+                  username: 'Guest',
                   totalMoney: 2500,
                   wins: 0,
                   losses: 0,
@@ -83,7 +83,7 @@ const PlayGameModal = ({
         </Button>
         <Button
           onClick={() => {
-            console.log("continue with play game");
+            console.log('continue with play game');
             startGameFunc();
             setOpen(false);
             playGameClickHandler();
